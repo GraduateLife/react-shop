@@ -1,14 +1,9 @@
-import React from "react";
-import logo from "./logo.svg";
-
-import { Button, ButtonGroup } from "@chakra-ui/react";
+import Pages from "./router/routes";
 
 function App() {
   return (
     <>
-      <Button colorScheme="red" size="lg">
-        Button
-      </Button>
+      <Pages></Pages>
     </>
   );
 }
