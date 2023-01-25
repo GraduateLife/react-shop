@@ -1,11 +1,7 @@
 import Pages from "./router/routes";
 
 function App() {
-  return (
-    <>
-      <Pages></Pages>
-    </>
-  );
+  return <Pages></Pages>;
 }
 
 export default App;
