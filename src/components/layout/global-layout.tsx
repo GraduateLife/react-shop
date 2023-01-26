@@ -1,9 +1,13 @@
-import { Container } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 
-export default function GlobalLayout(props: any) {
+type IProp = {
+  children: React.ReactNode;
+};
+
+export default function GlobalLayout({ children }: IProp) {
   return (
-    <Container centerContent maxW="container.xl">
-      {props.children}
-    </Container>
+    <Flex direction={"column"} align={"center"}>
+      {children}
+    </Flex>
   );
 }
