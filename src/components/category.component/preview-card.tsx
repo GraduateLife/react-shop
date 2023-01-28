@@ -1,8 +1,4 @@
-import { Flex } from "@chakra-ui/react";
-
-import ButtonFactory, {
-  ButtonShapes,
-} from "components/buttons.component/button-factory";
+import { Button, Flex } from "@chakra-ui/react";
 
 type IProp = {
   previewImageUrl: string;
@@ -11,6 +7,7 @@ type IProp = {
 
 export default function PreviewCard({ previewImageUrl, categoryName }: IProp) {
   return (
+    // LINK - bg-image
     <Flex
       align="center"
       justify="center"
@@ -20,9 +17,8 @@ export default function PreviewCard({ previewImageUrl, categoryName }: IProp) {
       bgRepeat="no-repeat"
       bgSize="100%"
     >
-      <ButtonFactory style={ButtonShapes.BUTTON_ALPHA} width={"48"}>
-        {categoryName.toUpperCase()}
-      </ButtonFactory>
+      {/* //LINK - button */}
+      <Button colorScheme={"whiteAlpha"}>{categoryName.toUpperCase()}</Button>
     </Flex>
   );
 }

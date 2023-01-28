@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import CategoryPage from "../pages/category.page/category-page";
-import ShopPage from "../pages/shop.page/shop-page";
+import CategoryPage from "../pages/category-page";
+import ProductPage from "../pages/product-page";
+import SignInPage from "../pages/sign-in-page";
 import Navbar from "./navbar";
 
 function Pages() {
@@ -10,7 +11,8 @@ function Pages() {
         <Routes>
           <Route path="/" element={<Navbar />}>
             <Route index element={<CategoryPage />} />
-            <Route path="shop" element={<ShopPage />} />
+            <Route path="products" element={<ProductPage />} />
+            <Route path="sign-in" element={<SignInPage />} />
           </Route>
         </Routes>
       </Router>

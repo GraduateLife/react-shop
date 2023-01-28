@@ -1,10 +1,7 @@
 import { Link, Outlet } from "react-router-dom";
 import LOGO from "../asset/logo.svg";
-import { Text, Flex, HStack, Image, Spacer } from "@chakra-ui/react";
+import { Text, Flex, HStack, Image, Spacer, Button } from "@chakra-ui/react";
 import GlobalLayout from "../components/layout/global-layout";
-
-import ButtonFactory from "components/buttons.component/button-factory";
-import { ButtonShapes } from "components/buttons.component/button-factory";
 
 export default function Navbar() {
   return (
@@ -12,7 +9,9 @@ export default function Navbar() {
       <Flex h={"28"} px={"20"} align={"center"} mb={"20"}>
         <Link to="/">
           <HStack>
+            {/* //LINK - logo */}
             <Image src={LOGO} alt="react-shop-logo" boxSize="16" />
+            {/* //LINK - brand name */}
             <Text
               pl={"4"}
               fontFamily="Tangerine"
@@ -26,16 +25,13 @@ export default function Navbar() {
 
         <Spacer />
         <HStack spacing={"10"}>
-          <Link to="/shop">
-            <ButtonFactory style={ButtonShapes.BUTTON_LINK}>
-              ALL PRODUCTS
-            </ButtonFactory>
+          {/* //LINK - link to all products page */}
+          <Link to="/products">
+            <Button>ALL PRODUCTS</Button>
           </Link>
-
+          {/* //LINK - link to sign in page */}
           <Link to="/sign-in">
-            <ButtonFactory style={ButtonShapes.BUTTON_LINK}>
-              SIGN IN
-            </ButtonFactory>
+            <Button>ACCOUNT</Button>
           </Link>
         </HStack>
       </Flex>
