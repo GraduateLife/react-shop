@@ -1,8 +1,8 @@
 import hatPreview from "./hat-preview.png";
 import coatPreview from "./coat-preview.png";
-import { Category } from "./category.schema";
+import { Category } from "../../models/category.type";
 
-export const AllCategories: Category[] = [
+const AllCategories: Category[] = [
   {
     categoryName: "hat",
     imageUrl: hatPreview,
@@ -12,3 +12,5 @@ export const AllCategories: Category[] = [
     imageUrl: coatPreview,
   },
 ];
+
+export const fetchAllCategories = (): Category[] => AllCategories;

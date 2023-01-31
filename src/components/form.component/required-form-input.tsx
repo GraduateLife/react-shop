@@ -12,18 +12,21 @@ export type formInputProps = {
   InputType: string;
   InputPlaceHolder: string;
   InputHelper: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-export default function FormInput({
+export default function RequiredFormInput({
   labelName,
   InputType,
   InputPlaceHolder,
   InputHelper,
+  onChange,
 }: formInputProps) {
   const [input, setInput] = useState("");
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInput(e.target.value); //TODO - throttle
+    onChange(e);
   };
 
   const isEmpty = input === "";
