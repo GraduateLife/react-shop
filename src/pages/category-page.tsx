@@ -1,36 +1,38 @@
-import { GridItem, Box, SimpleGrid, Spinner } from "@chakra-ui/react";
-import PreviewCard from "../components/category.component/preview-card";
+import { GridItem, Heading } from "@chakra-ui/react";
+import PreviewCard from "../components/category/preview-card";
 import { fetchAllCategories } from "../__DUMMY__DATA__/category/queries";
 import { useEffect, useState } from "react";
 import { Category } from "../models/category.type";
+import SuperBigSpinner from "../components/layout/super-big-spinner";
+import ResponsiveGrid from "../components/layout/responsive-grid";
 
-//FIXME - redux integration
-
+//FIXME - redux-saga async shit
+//STUB - dummy async ready
 export default function CategoryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
-    setCategories(fetchAllCategories());
+    setTimeout(() => setCategories(fetchAllCategories()), 700);
   }, []);
 
-  return (
-    <>
-      <Box>Start your shopping!</Box>
-      <SimpleGrid columns={3} gap={4}>
-        {categories.length > 0 ? (
-          categories.map(({ categoryName, imageUrl }) => {
+  if (categories.length > 0) {
+    return (
+      <>
+        <Heading my={12}>Start your shopping!</Heading>
+        <ResponsiveGrid desktopCol={3} mobileCol={1} gap={4}>
+          {categories.map(({ categoryName, imageUrl }) => {
             return (
-              <GridItem key={categoryName}>
+              <GridItem h={"64"} w={"96"} key={categoryName}>
                 <PreviewCard
                   previewImageUrl={imageUrl}
                   categoryName={categoryName}
                 ></PreviewCard>
               </GridItem>
             );
-          })
-        ) : (
-          <Spinner />
-        )}
-      </SimpleGrid>
-    </>
-  );
+          })}
+        </ResponsiveGrid>
+      </>
+    );
+  }
+  //FIXME - move to global layout
+  return <SuperBigSpinner />;
 }

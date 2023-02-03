@@ -1,11 +1,11 @@
 import { Box, Button, VStack, Heading, Flex, Text } from "@chakra-ui/react";
 import React, { useState } from "react";
-import RequiredInput from "../components/form.component/required-form-input";
+import RequiredInput from "../components/form/required-form-input";
 import {
   EmailLoginInput,
   FORM_INPUT,
   PasswordLoginInput,
-} from "../components/form.component/form-input.builder";
+} from "../components/form/form-input.builder";
 import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { isCorrectUser } from "../__DUMMY__DATA__/user/correct-user";
@@ -17,13 +17,21 @@ export default function SignInPage() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const [signInBtnLoading, setSignInBtnLoading] = useState(false);
+
   // FIXME - queries happen in page
+  //STUB dummy async ready
   const handleSignIn = () => {
-    alert("communicate with firebase for auth...");
+    setSignInBtnLoading(true);
+
     if (isCorrectUser({ UserEmail: email, UserPassword: password })) {
-      navigate("/");
+      setTimeout(() => {
+        setSignInBtnLoading(false);
+        navigate("/products");
+      }, 3000);
     } else {
       alert("input error");
+      setSignInBtnLoading(false);
     }
   };
   const handleInput =
@@ -45,7 +53,7 @@ export default function SignInPage() {
     <Flex justify={"space-between"} alignItems={"center"}>
       <VStack align="stretch" w={"96"} my={"10"} mr={40}>
         <Heading>I have an account</Heading>
-        {/* LINK //Email */}
+        {/* LINK Email */}
         <Box h={"100"}>
           <RequiredInput
             {...EmailLoginInput}
@@ -67,6 +75,7 @@ export default function SignInPage() {
         >
           {/*LINK sign in btn */}
           <Button
+            isLoading={signInBtnLoading}
             size={"long"}
             onClick={() => {
               handleSignIn();
@@ -77,12 +86,14 @@ export default function SignInPage() {
           <Text fontSize={"md"} color={"gray.500"}>
             or
           </Text>
-          {/* //LINK - provider options */}
+          {/* LINK - provider options */}
+          {/* STUB only google available currently */}
           <Button size={"long"} variant={"google"} leftIcon={<FcGoogle />}>
             Sign in with Google
           </Button>
         </Flex>
       </VStack>
+      {/* LINK new user section*/}
       <Flex
         direction={"column"}
         justify={"space-around"}
@@ -91,7 +102,7 @@ export default function SignInPage() {
       >
         <Heading>I don't have an account</Heading>
         <Text fontSize={"2xl"}>Join our membership just by your Email!</Text>
-
+        {/* LINK sign up btn */}
         <Link to="/sign-up">
           <Button size={"long"}>sign up</Button>
         </Link>
