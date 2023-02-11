@@ -1,11 +1,12 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { Category } from "../../models/category.type";
 
 type IProp = {
-  previewImageUrl: string;
-  categoryName: string;
+  category: Category;
 };
 
-export default function PreviewCard({ previewImageUrl, categoryName }: IProp) {
+export default function PreviewCard({ category }: IProp) {
+  const { CateName, CateImageUrl } = category;
   return (
     // LINK - bg-image
     <Flex
@@ -13,12 +14,12 @@ export default function PreviewCard({ previewImageUrl, categoryName }: IProp) {
       justify="center"
       h={"inherit"}
       w={"inherit"}
-      bgImage={previewImageUrl}
+      bgImage={CateImageUrl}
       bgRepeat="no-repeat"
       bgSize="100%"
     >
       {/* //LINK - button */}
-      <Button colorScheme={"whiteAlpha"}>{categoryName.toUpperCase()}</Button>
+      <Button colorScheme={"whiteAlpha"}>{CateName.toUpperCase()}</Button>
     </Flex>
   );
 }

@@ -1,15 +1,10 @@
-import type { formInputProps } from "./required-form-input";
-
 export enum FORM_INPUT {
   EMAIL = "email",
   PWD = "password",
   PWD_CONFIRM = "password confirm",
 }
 
-type InputBuilder = Pick<
-  formInputProps,
-  "labelName" | "InputType" | "InputPlaceHolder" | "InputHelper"
->;
+type InputBuilder = any;
 
 export const EmailLoginInput: InputBuilder = {
   labelName: "Your Email Address",

@@ -3,5 +3,5 @@ export type Product = {
   ProdName: string;
   ProdPrice: number;
   ProdImageUrl: string;
-  BelongsToCategory: string;
+  ProdBelongsToCategory: string;
 };

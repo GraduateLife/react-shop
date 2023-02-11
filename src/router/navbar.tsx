@@ -4,6 +4,8 @@ import GlobalLayout from "../components/layout/global-layout";
 import BrandLogo from "../theme/Logo";
 import CartComponent from "../components/cart/cart.component";
 
+//FIXME - logout button
+
 export default function Navbar() {
   return (
     <GlobalLayout>
@@ -32,7 +34,7 @@ export default function Navbar() {
         <HStack spacing={"10"}>
           {/* //LINK - link to all products page */}
           <Link to="/products">
-            <Button>shop</Button>
+            <Button>products</Button>
           </Link>
           {/* //LINK - link to sign in page */}
           <Link to="/sign-in">

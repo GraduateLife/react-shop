@@ -16,11 +16,6 @@ export const theme = extendTheme({
     },
   },
   components: {
-    Text: {
-      baseStyle: {
-        fontSize: "4xl",
-      },
-    },
     Button: {
       baseStyle: {
         textTransform: "uppercase",

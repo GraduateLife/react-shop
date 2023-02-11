@@ -1,27 +1,29 @@
-import { Box } from "@chakra-ui/react";
-import { CartItem } from "../../models/cart-item.type";
-import CartListItem from "./cart-list-item";
+import { Box, Center } from "@chakra-ui/react";
 
-type ListProp = {
+import { CartItem } from "../../models/cart-item.type";
+
+import CartListItem from "./cart-list-item";
+import { CartParams } from "./component-parameters";
+
+type IProp = {
   cartList: CartItem[];
 };
 
-export default function CartList({ cartList }: ListProp) {
-  if (cartList.length > 0) {
+//STUB list need to know item number as well to remove item, hence cartListItem reducer is needed
+export default function CartList({ cartList }: IProp) {
+  if (cartList.length === 0) {
     return (
-      <Box>
-        {cartList.map(({ ProdId, ProdImageUrl, ProdName, quantity }) => {
-          return (
-            <CartListItem
-              key={ProdId}
-              imageUrl={ProdImageUrl}
-              productName={ProdName}
-              itemAmount={quantity}
-            />
-          );
-        })}
-      </Box>
+      <Center h={`${CartParams.CART_EMPTY_SIZE}`} fontSize={"xl"}>
+        Cart is currently empty
+      </Center>
     );
   }
-  return <Box>cart is empty</Box>;
+
+  return (
+    <Box>
+      {cartList.map((cartItem) => {
+        return <CartListItem key={cartItem.ProdId} cartItem={cartItem} />;
+      })}
+    </Box>
+  );
 }

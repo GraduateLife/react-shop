@@ -1,4 +1,4 @@
 export type Category = {
-  categoryName: string;
-  imageUrl: string;
+  CateName: string;
+  CateImageUrl: string;
 };

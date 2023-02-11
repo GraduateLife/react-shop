@@ -12,33 +12,61 @@ import {
   PopoverTrigger,
   Portal,
 } from "@chakra-ui/react";
-import React, { useMemo, useState } from "react";
+
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CartItem } from "../../models/cart-item.type";
-import { fetchAllProducts } from "../../__DUMMY__DATA__/products/cartItems-list";
+
+import {
+  selectCartList,
+  selectCartOverallPrice,
+  selectCartOverallQuantity,
+} from "../../store/cart/cart-list.selector";
 import LoadingSpinner from "../layout/loading-spinner";
-import CartIcon from "./cart-icon";
+import { CartIcon } from "./cart-icon";
 import CartList from "./cart-list";
+import { CartParams } from "./component-parameters";
 
 //FIXME - saga
-//FIXME - 纯函数组件还需要拆的更加碎一点
-export default function CartComponent() {
-  const [cartList, setCartList] = useState<CartItem[]>(); // initialize as null, coz fetched data can be [] as well
-  const [cartListIsPending, setCartListIsPending] = useState(true);
-  const fetchCartRes = useMemo(() => fetchAllProducts(), []);
 
-  const handleCartBtnClick = () => {
-    setTimeout(() => setCartList(fetchCartRes), 2000);
-    setCartListIsPending(false);
+//memoized
+function CartComponent() {
+  let cartList = useSelector(selectCartList);
+  // const cartList: CartItem[] = [];
+  const cartOverallQuantity = useSelector(selectCartOverallQuantity);
+  const cartOverallPrice = useSelector(selectCartOverallPrice);
+
+  const [cartListIsPending, setCartListIsPending] = useState(false);
+  let disPlayHeight =
+    cartList && cartList.length > CartParams.CART_ITEM_DISPLAY_UP_LIMIT
+      ? 75 * CartParams.CART_ITEM_DISPLAY_UP_LIMIT
+      : "whatever";
+  let popOverHeightShouldBe = cartListIsPending
+    ? CartParams.CART_EMPTY_SIZE
+    : disPlayHeight;
+
+  const handleCartIconBtnClick = () => {
+    setCartListIsPending(true);
+    setTimeout(() => {
+      setCartListIsPending(false);
+    }, 1500);
   };
-  const navigate = useNavigate();
+  const handlePopoverClose = () => {
+    //TODO - write to fb
+    console.log("cl");
+  };
 
-  const handleCheckoutNavigate = () => {
+  const navigate = useNavigate();
+  const handleCheckoutBtnClick = () => {
     alert("writing latest cart information to firebase...");
     navigate("/checkout");
   };
   return (
-    <Popover placement="bottom-start">
+    <Popover
+      placement="bottom-start"
+      isLazy
+      onClose={() => handlePopoverClose()}
+    >
       {/* //LINK - cart icon btn */}
       <PopoverTrigger>
         <IconButton
@@ -46,7 +74,7 @@ export default function CartComponent() {
           aria-label="open shopping cart"
           icon={<CartIcon />}
           onClick={() => {
-            handleCartBtnClick();
+            handleCartIconBtnClick();
           }}
         />
       </PopoverTrigger>
@@ -60,9 +88,18 @@ export default function CartComponent() {
             Here are the things you want
           </PopoverHeader>
           {/* LINK dropdown body, cart items shit */}
-          <PopoverBody>
-            {cartListIsPending === true || !cartList ? (
-              <Flex w={"100%"} h={"60"} justify={"center"} align={"center"}>
+          <PopoverBody
+            p={"0"} //PopoverBody has default padding
+            h={`${popOverHeightShouldBe}`}
+            overflowY={"auto"}
+          >
+            {cartListIsPending === true ? (
+              <Flex
+                w={"100%"}
+                h={`${CartParams.CART_EMPTY_SIZE}`}
+                justify={"center"}
+                align={"center"}
+              >
                 <LoadingSpinner />
               </Flex>
             ) : (
@@ -71,13 +108,14 @@ export default function CartComponent() {
           </PopoverBody>
           {/* LINK dropdown footer, checkout button */}
           <PopoverFooter border={"none"}>
-            <Flex justify={"center"}>
+            Overall Price: £ {cartOverallPrice}
+            <Flex mt={2} justify={"center"}>
               <Button
                 colorScheme={"cyan"}
                 color="white"
-                onClick={() => handleCheckoutNavigate()}
+                onClick={() => handleCheckoutBtnClick()}
               >
-                checkout
+                checkout({cartOverallQuantity})
               </Button>
             </Flex>
           </PopoverFooter>
@@ -87,3 +125,5 @@ export default function CartComponent() {
     </Popover>
   );
 }
+
+export default React.memo(CartComponent);

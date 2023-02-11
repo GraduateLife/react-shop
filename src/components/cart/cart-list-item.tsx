@@ -1,36 +1,69 @@
-import { Flex, IconButton, Icon, Image, Box, Text } from "@chakra-ui/react";
-import React from "react";
+import { Flex, IconButton, Image, Box, Text } from "@chakra-ui/react";
 
-import { VscChevronUp, VscChevronDown } from "react-icons/vsc";
-type ItemProp = {
-  imageUrl: string;
-  productName: string;
-  itemAmount: number;
+import React from "react";
+import { CartItem } from "../../models/cart-item.type";
+import { useDispatch } from "react-redux";
+import {
+  ACTION_MINUS,
+  ACTION_PLUS,
+  ACTION_REMOVE,
+} from "../../store/cart/cart-list.slice";
+import { AmountDownIcon, AmountUpIcon, RemoveIcon } from "./cart-icon";
+
+type IProp = {
+  cartItem: CartItem;
 };
 
-function CartListItem({ imageUrl, productName, itemAmount }: ItemProp) {
-  console.log("cart list item rendered");
+function CartListItem({ cartItem }: IProp) {
+  const { ProdName, ProdImageUrl, ItemQuantity, ProdPrice } = cartItem;
+  const dispatch = useDispatch();
+  const handleRemoveItemBtnClick = () => {
+    dispatch(ACTION_REMOVE(cartItem));
+  };
+
+  const handleAmountDownBtnClick = () => {
+    dispatch(ACTION_MINUS(cartItem));
+  };
+  const handleAmountUpBtnClick = () => {
+    console.log("item rendered", cartItem.ProdName);
+    dispatch(ACTION_PLUS(cartItem));
+  };
+
   return (
     <Flex justify={"space-around"} align={"center"} my={"1"}>
-      <Image boxSize={70} src={imageUrl} />
-      <Box flex={1} width={20} px={6}>
-        <Text fontSize={"2xl"} noOfLines={2}>
-          {productName}
-        </Text>
+      <IconButton
+        variant="invisible"
+        aria-label="Remove item"
+        icon={<RemoveIcon boxSize={5} />}
+        onClick={() => handleRemoveItemBtnClick()}
+      />
+
+      <Image boxSize={70} src={ProdImageUrl} alt={ProdName} />
+      <Box flex={1} width={30}>
+        <Flex pl={4} direction={"column"}>
+          <Text fontSize={"xl"} noOfLines={1} flex={7} fontWeight={600}>
+            {ProdName}
+          </Text>
+          <Text fontSize={"md"} noOfLines={1} flex={3}>
+            £ {ProdPrice}
+          </Text>
+        </Flex>
       </Box>
       <Flex direction={"column"} align={"center"}>
         <IconButton
           boxSize={4}
           variant="invisible"
           aria-label="Amount up"
-          icon={<Icon as={VscChevronUp} color={"black"} />}
+          icon={<AmountUpIcon />}
+          onClick={() => handleAmountUpBtnClick()}
         />
-        <Text fontSize={"md"}>{itemAmount}</Text>
+        <Text fontSize={"md"}>{ItemQuantity}</Text>
         <IconButton
           boxSize={4}
           variant="invisible"
           aria-label="Amount down"
-          icon={<Icon as={VscChevronDown} color={"black"} />}
+          icon={<AmountDownIcon />}
+          onClick={() => handleAmountDownBtnClick()}
         />
       </Flex>
     </Flex>

@@ -4,12 +4,12 @@ import { Category } from "../../models/category.type";
 
 const AllCategories: Category[] = [
   {
-    categoryName: "hat",
-    imageUrl: hatPreview,
+    CateName: "hat",
+    CateImageUrl: hatPreview,
   },
   {
-    categoryName: "coat",
-    imageUrl: coatPreview,
+    CateName: "coat",
+    CateImageUrl: coatPreview,
   },
 ];
 

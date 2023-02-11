@@ -1,5 +1,3 @@
-import { nanoid } from "@reduxjs/toolkit";
-
 import redHat from "./hatImages/red-hat.png";
 import greenHat from "./hatImages/green-hat.png";
 import orangeHat from "./hatImages/orange-hat.png";
@@ -12,74 +10,103 @@ import { CartItem } from "../../models/cart-item.type";
 
 const allProducts: CartItem[] = [
   {
-    ProdId: nanoid(),
+    ProdId: "qsq",
     ProdName: "red hat",
     ProdPrice: 99,
     ProdImageUrl: redHat,
-    BelongsToCategory: "hat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "axdasc",
     ProdName: "green hat",
     ProdPrice: 89,
     ProdImageUrl: greenHat,
-    BelongsToCategory: "hat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "fsn",
     ProdName: "orange hat",
     ProdPrice: 199,
     ProdImageUrl: orangeHat,
-    BelongsToCategory: "hat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "nui",
     ProdName: "yellow hat",
     ProdPrice: 899,
     ProdImageUrl: yellowHat,
-    BelongsToCategory: "hat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "ewrbw",
     ProdName: "red coat",
     ProdPrice: 9988,
     ProdImageUrl: redCoat,
-    BelongsToCategory: "coat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "houi",
     ProdName: "green coat",
     ProdPrice: 8999,
     ProdImageUrl: greenCoat,
-    BelongsToCategory: "coat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "tcrt",
     ProdName: "orange coat",
     ProdPrice: 19999,
     ProdImageUrl: orangeCoat,
-    BelongsToCategory: "coat",
-    quantity: 9,
+
+    ItemQuantity: 9,
   },
   {
-    ProdId: nanoid(),
+    ProdId: "bre",
     ProdName: "yellow coat",
     ProdPrice: 9000,
     ProdImageUrl: yellowCoat,
-    BelongsToCategory: "coat",
-    quantity: 9,
+
+    ItemQuantity: 9,
+  },
+  {
+    ProdId: "qsqc",
+    ProdName: "red hat",
+    ProdPrice: 99,
+    ProdImageUrl: redHat,
+
+    ItemQuantity: 9,
+  },
+  {
+    ProdId: "qsqg",
+    ProdName: "red hat",
+    ProdPrice: 99,
+    ProdImageUrl: redHat,
+
+    ItemQuantity: 9,
+  },
+  {
+    ProdId: "qsqt",
+    ProdName: "red hat",
+    ProdPrice: 99,
+    ProdImageUrl: redHat,
+
+    ItemQuantity: 9,
+  },
+  {
+    ProdId: "qsql",
+    ProdName: "red hatbuyimvvew",
+    ProdPrice: 99,
+    ProdImageUrl: redHat,
+
+    ItemQuantity: 9,
   },
 ];
 
-export const fetchAllProducts = () => {
+export const fetchAllCartItems = () => {
   return allProducts;
-};
-export const fetchProductsByCategory = (categoryName: string) => {
-  return allProducts.filter((item) => item.BelongsToCategory === categoryName);
 };
