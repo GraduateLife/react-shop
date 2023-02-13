@@ -23,27 +23,20 @@ import {
   selectCartOverallQuantity,
 } from "../../store/cart/cart-list.selector";
 import LoadingSpinner from "../layout/loading-spinner";
-import { CartIcon } from "./cart-icon";
+import { CartIcon } from "./cart-icons";
+
 import CartList from "./cart-list";
-import { CartParams } from "./component-parameters";
+import { CART_BEHAVIORS } from "./component-behaviors";
 
 //FIXME - saga
 
 //memoized
-function CartComponent() {
+function CartPopover() {
   let cartList = useSelector(selectCartList);
   // const cartList: CartItem[] = [];
   const cartOverallQuantity = useSelector(selectCartOverallQuantity);
   const cartOverallPrice = useSelector(selectCartOverallPrice);
-
   const [cartListIsPending, setCartListIsPending] = useState(false);
-  let disPlayHeight =
-    cartList && cartList.length > CartParams.CART_ITEM_DISPLAY_UP_LIMIT
-      ? 75 * CartParams.CART_ITEM_DISPLAY_UP_LIMIT
-      : "whatever";
-  let popOverHeightShouldBe = cartListIsPending
-    ? CartParams.CART_EMPTY_SIZE
-    : disPlayHeight;
 
   const handleCartIconBtnClick = () => {
     setCartListIsPending(true);
@@ -70,7 +63,7 @@ function CartComponent() {
       {/* //LINK - cart icon btn */}
       <PopoverTrigger>
         <IconButton
-          variant="invisible"
+          variant="invisible-active"
           aria-label="open shopping cart"
           icon={<CartIcon />}
           onClick={() => {
@@ -90,13 +83,12 @@ function CartComponent() {
           {/* LINK dropdown body, cart items shit */}
           <PopoverBody
             p={"0"} //PopoverBody has default padding
-            h={`${popOverHeightShouldBe}`}
             overflowY={"auto"}
           >
             {cartListIsPending === true ? (
               <Flex
                 w={"100%"}
-                h={`${CartParams.CART_EMPTY_SIZE}`}
+                h={`${CART_BEHAVIORS.CART_EMPTY_HEIGHT}`}
                 justify={"center"}
                 align={"center"}
               >
@@ -108,11 +100,12 @@ function CartComponent() {
           </PopoverBody>
           {/* LINK dropdown footer, checkout button */}
           <PopoverFooter border={"none"}>
-            Overall Price: £ {cartOverallPrice}
+            Overall Price: £ {cartListIsPending ? "--" : cartOverallPrice}
             <Flex mt={2} justify={"center"}>
               <Button
                 colorScheme={"cyan"}
                 color="white"
+                isLoading={cartListIsPending}
                 onClick={() => handleCheckoutBtnClick()}
               >
                 checkout({cartOverallQuantity})
@@ -126,4 +119,4 @@ function CartComponent() {
   );
 }
 
-export default React.memo(CartComponent);
+export default React.memo(CartPopover);

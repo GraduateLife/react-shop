@@ -11,7 +11,7 @@ import ResponsiveGrid from "../components/layout/responsive-grid";
 export default function CategoryPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   useEffect(() => {
-    setTimeout(() => setCategories(fetchAllCategories()), 700);
+    setTimeout(() => setCategories(fetchAllCategories()), 1700);
   }, []);
 
   return (

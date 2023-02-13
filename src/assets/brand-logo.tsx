@@ -2,12 +2,7 @@ import { Icon } from "@chakra-ui/react";
 
 import React from "react";
 
-type P = {
-  boxSize: number;
-  color: string;
-};
-
-export default function BrandLogo(props: P) {
+export default function BrandLogo(props: any) {
   return (
     <Icon viewBox="0 0 24 24" {...props}>
       <path

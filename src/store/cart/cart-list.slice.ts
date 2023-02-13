@@ -4,7 +4,7 @@ import { Product } from "../../models/product.type";
 import { fetchAllCartItems } from "../../__DUMMY__DATA__/products/cartItems-list";
 import { addOneItem, reduceOneItem, removeOneItem } from "./cart-list.effect";
 
-const SLICE_NAME = "cart-list";
+const SLICE_NAME = "CART_LIST";
 
 //FIXME all items should be async
 //? Q so when should I request for cartList?

@@ -19,7 +19,7 @@ export default function PreviewCard({ category }: IProp) {
       bgSize="100%"
     >
       {/* //LINK - button */}
-      <Button colorScheme={"whiteAlpha"}>{CateName.toUpperCase()}</Button>
+      <Button colorScheme={"whiteAlpha"}>{CateName}</Button>
     </Flex>
   );
 }

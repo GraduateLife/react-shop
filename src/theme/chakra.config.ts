@@ -7,12 +7,15 @@ export const theme = extendTheme({
 
   colors: {
     brand: {
-      100: "#FEEBC8",
-      900: "#DD6B20",
+      500: "#DD6B20",
     },
     google: {
       100: "#4285F4",
       900: "#2B6CB0",
+    },
+    shadow: {
+      shallow: "#EDF2F7",
+      heavy: "#2D3748",
     },
   },
   components: {
@@ -43,14 +46,35 @@ export const theme = extendTheme({
         },
         invisible: {
           border: "none",
+          borderRadius: "10px",
           width: 10,
           height: 10,
+        },
+        "invisible-active": {
+          border: "none",
+          borderRadius: "10px",
+          width: 12,
+          height: 12,
+          _hover: {
+            bg: "shadow.shallow",
+          },
         },
       },
       defaultProps: {
         size: "md",
         variant: "solid",
         colorScheme: "orange",
+      },
+    },
+    Icon: {
+      baseStyle: {
+        boxSize: "8",
+      },
+      defaultProps: {},
+    },
+    Input: {
+      defaultProps: {
+        variant: "flushed",
       },
     },
   },

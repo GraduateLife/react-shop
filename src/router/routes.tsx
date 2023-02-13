@@ -7,7 +7,7 @@ import SignInPage from "../pages/sign-in-page";
 import SignUpPage from "../pages/sign-up-page";
 import Navbar from "./navbar";
 
-function Pages() {
+function WebsitePages() {
   return (
     <>
       <Router>
@@ -26,4 +26,4 @@ function Pages() {
   );
 }
 
-export default Pages;
+export default WebsitePages;

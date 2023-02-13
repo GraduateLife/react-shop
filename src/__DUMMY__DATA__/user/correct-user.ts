@@ -5,23 +5,8 @@ export const testAccount: User = {
   UserPassword: "123456789",
 };
 
-export const isCorrectUser = (u: User): boolean => {
+export const isCorrectUser = (u: any): boolean => {
   return (
-    u.UserEmail === testAccount.UserEmail &&
-    u.UserPassword === testAccount.UserPassword
+    u.email === testAccount.UserEmail && u.password === testAccount.UserPassword
   );
 };
-
-export const checkUserValidity = (
-  u: User,
-  confirmedPassword: string
-): boolean => {
-  return (
-    isValidEmail(u.UserEmail) &&
-    isValidPassword(u.UserPassword) &&
-    u.UserPassword === confirmedPassword
-  );
-};
-
-const isValidEmail = (email: string): boolean => /@/.test(email);
-const isValidPassword = (password: string): boolean => password.length >= 8;

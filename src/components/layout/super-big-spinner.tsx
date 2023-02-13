@@ -6,8 +6,8 @@ export default function SuperBigSpinner() {
     <Flex justify={"center"} align={"center"} my={40}>
       <Spinner
         boxSize={96}
-        emptyColor="gray.200"
-        color={"brand.900"}
+        emptyColor="shadow.shallow"
+        color={"brand.500"}
         thickness="15px"
       />
     </Flex>

@@ -8,27 +8,33 @@ import {
   FormHelperText,
   Flex,
   Center,
+  VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignUpInformation, SignUpValidator } from "./sign-up-form.validator";
+import { SignInInformation, SignInValidator } from "./sign-in-form.validator";
 import { useNavigate } from "react-router-dom";
+import { isCorrectUser } from "../../__DUMMY__DATA__/user/correct-user";
 
-export default function SignUpForm() {
+export default function SignInForm() {
   const {
     handleSubmit: RHF_handler,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<SignUpInformation>({ resolver: zodResolver(SignUpValidator) });
+  } = useForm<SignInInformation>({ resolver: zodResolver(SignInValidator) });
   const navigate = useNavigate();
   //ANCHOR react hook form submit handler must return promise to override isSubmitting
-  const handleSubmit = (formInputs: SignUpInformation) => {
+  const handleSubmit = (formInputs: SignInInformation) => {
     console.log(formInputs);
 
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(JSON.stringify(formInputs));
-        resolve(formInputs);
-        navigate("/");
+        if (isCorrectUser(formInputs)) {
+          navigate("/");
+        } else {
+          alert("not the right person");
+        }
+        resolve(null);
       }, 1000);
     });
   };
@@ -47,9 +53,7 @@ export default function SignUpForm() {
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
-            <FormHelperText>
-              You will use this email address as account
-            </FormHelperText>
+            <FormHelperText>Please enter your email address</FormHelperText>
           )}
         </FormControl>
         {/* //LINK password */}
@@ -64,39 +68,20 @@ export default function SignUpForm() {
           {errors.password ? (
             <FormErrorMessage>{errors.password.message}</FormErrorMessage>
           ) : (
-            <FormHelperText>Please keep it in mind</FormHelperText>
+            <FormHelperText>And your password as well</FormHelperText>
           )}
         </FormControl>
-        {/* //LINK confirm password */}
-        <FormControl isRequired isInvalid={errors ? true : false}>
-          <FormLabel htmlFor="confirm-password">
-            Confirm your password
-          </FormLabel>
-          <Input
-            id="confirm-password"
-            placeholder="Confirm your password"
-            type={"password"}
-            {...register("confirmPassword")}
-          />
-          {errors.confirmPassword ? (
-            <FormErrorMessage>
-              {errors.confirmPassword.message}
-            </FormErrorMessage>
-          ) : (
-            <FormHelperText>
-              You need to enter the password again
-            </FormHelperText>
-          )}
-        </FormControl>
+
         {/* //LINK - submit btn */}
         <Center>
           <Button
-            mt={4}
+            mt={8}
+            size={"long"}
             colorScheme="orange"
             isLoading={isSubmitting}
             type="submit"
           >
-            Submit
+            SIGN IN
           </Button>
         </Center>
       </form>

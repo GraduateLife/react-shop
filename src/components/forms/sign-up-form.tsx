@@ -10,18 +10,18 @@ import {
   Center,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SignInInformation, SignInValidator } from "./sign-in-form.validator";
+import { SignUpInformation, SignUpValidator } from "./sign-up-form.validator";
 import { useNavigate } from "react-router-dom";
 
-export default function SignInForm() {
+export default function SignUpForm() {
   const {
     handleSubmit: RHF_handler,
     register,
     formState: { errors, isSubmitting },
-  } = useForm<SignInInformation>({ resolver: zodResolver(SignInValidator) });
+  } = useForm<SignUpInformation>({ resolver: zodResolver(SignUpValidator) });
   const navigate = useNavigate();
   //ANCHOR react hook form submit handler must return promise to override isSubmitting
-  const handleSubmit = (formInputs: SignInInformation) => {
+  const handleSubmit = (formInputs: SignUpInformation) => {
     console.log(formInputs);
 
     return new Promise((resolve) => {
@@ -67,17 +67,36 @@ export default function SignInForm() {
             <FormHelperText>Please keep it in mind</FormHelperText>
           )}
         </FormControl>
-
+        {/* //LINK confirm password */}
+        <FormControl isRequired isInvalid={errors ? true : false}>
+          <FormLabel htmlFor="confirm-password">
+            Confirm your password
+          </FormLabel>
+          <Input
+            id="confirm-password"
+            placeholder="Confirm your password"
+            type={"password"}
+            {...register("confirmPassword")}
+          />
+          {errors.confirmPassword ? (
+            <FormErrorMessage>
+              {errors.confirmPassword.message}
+            </FormErrorMessage>
+          ) : (
+            <FormHelperText>
+              You need to enter the password again
+            </FormHelperText>
+          )}
+        </FormControl>
         {/* //LINK - submit btn */}
         <Center>
           <Button
-            mt={8}
-            size={"long"}
+            mt={4}
             colorScheme="orange"
             isLoading={isSubmitting}
             type="submit"
           >
-            Submit
+            register
           </Button>
         </Center>
       </form>

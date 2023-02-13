@@ -8,7 +8,7 @@ import {
   ACTION_PLUS,
   ACTION_REMOVE,
 } from "../../store/cart/cart-list.slice";
-import { AmountDownIcon, AmountUpIcon, RemoveIcon } from "./cart-icon";
+import { AmountDownIcon, AmountUpIcon, RemoveIcon } from "./cart-icons";
 
 type IProp = {
   cartItem: CartItem;
@@ -34,7 +34,7 @@ function CartListItem({ cartItem }: IProp) {
       <IconButton
         variant="invisible"
         aria-label="Remove item"
-        icon={<RemoveIcon boxSize={5} />}
+        icon={<RemoveIcon />}
         onClick={() => handleRemoveItemBtnClick()}
       />
 
@@ -51,16 +51,16 @@ function CartListItem({ cartItem }: IProp) {
       </Box>
       <Flex direction={"column"} align={"center"}>
         <IconButton
-          boxSize={4}
           variant="invisible"
+          boxSize={4}
           aria-label="Amount up"
           icon={<AmountUpIcon />}
           onClick={() => handleAmountUpBtnClick()}
         />
         <Text fontSize={"md"}>{ItemQuantity}</Text>
         <IconButton
-          boxSize={4}
           variant="invisible"
+          boxSize={4}
           aria-label="Amount down"
           icon={<AmountDownIcon />}
           onClick={() => handleAmountDownBtnClick()}
