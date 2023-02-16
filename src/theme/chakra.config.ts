@@ -6,15 +6,14 @@ export const theme = extendTheme({
   },
 
   colors: {
-    brand: {
-      500: "#DD6B20",
-    },
+    brand: "#DD6B20",
     google: {
       100: "#4285F4",
       900: "#2B6CB0",
     },
     shadow: {
-      shallow: "#EDF2F7",
+      light: "#EDF2F7",
+      medium: "#718096",
       heavy: "#2D3748",
     },
   },
@@ -56,7 +55,7 @@ export const theme = extendTheme({
           width: 12,
           height: 12,
           _hover: {
-            bg: "shadow.shallow",
+            bg: "shadow.light",
           },
         },
       },

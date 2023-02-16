@@ -12,7 +12,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpInformation, SignUpValidator } from "./sign-up-form.validator";
 import { useNavigate } from "react-router-dom";
+import { createUser } from "../../firebase/authentication";
+import { createUserDoc } from "../../firebase/firestore";
 
+//FIXME - ugly
 export default function SignUpForm() {
   const {
     handleSubmit: RHF_handler,
@@ -21,21 +24,40 @@ export default function SignUpForm() {
   } = useForm<SignUpInformation>({ resolver: zodResolver(SignUpValidator) });
   const navigate = useNavigate();
   //ANCHOR react hook form submit handler must return promise to override isSubmitting
-  const handleSubmit = (formInputs: SignUpInformation) => {
-    console.log(formInputs);
+  const handleSubmit = async (formInputs: SignUpInformation) => {
+    let { nickname, email, password } = formInputs;
+    if (nickname.trim().length === 0) {
+      nickname = Math.random().toString(36).slice(-8);
+    }
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log(JSON.stringify(formInputs));
-        resolve(formInputs);
-        navigate("/");
-      }, 1000);
-    });
+    try {
+      const firebaseResponse = await createUser(email, password);
+      console.log(firebaseResponse);
+      await createUserDoc(firebaseResponse, { displayName: nickname });
+      navigate("/");
+    } catch (e: any) {
+      if (e.code === "auth/email-already-in-use") alert(e);
+    }
   };
 
   return (
     <Flex w={"inherit"} direction={"column"} align={"center"}>
       <form style={{ width: "inherit" }} onSubmit={RHF_handler(handleSubmit)}>
+        <FormControl>
+          <FormLabel htmlFor="nickname">Nickname (Optional)</FormLabel>
+          <Input
+            id="nickname"
+            placeholder="Your nickname"
+            {...register("nickname")}
+          />
+          {errors.email ? (
+            <FormErrorMessage>{errors.email.message}</FormErrorMessage>
+          ) : (
+            <FormHelperText>
+              Tell us your nickname or we will automatically create one
+            </FormHelperText>
+          )}
+        </FormControl>
         {/* //LINK - email address */}
         <FormControl isRequired isInvalid={errors ? true : false}>
           <FormLabel htmlFor="email">Email Address</FormLabel>
@@ -48,7 +70,7 @@ export default function SignUpForm() {
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
             <FormHelperText>
-              You will use this email address as account
+              You will use this email address as your account
             </FormHelperText>
           )}
         </FormControl>
@@ -64,7 +86,10 @@ export default function SignUpForm() {
           {errors.password ? (
             <FormErrorMessage>{errors.password.message}</FormErrorMessage>
           ) : (
-            <FormHelperText>Please keep it in mind</FormHelperText>
+            <FormHelperText>
+              8 to 16 characters, must contain one number, one uppercase letter
+              and one special letter
+            </FormHelperText>
           )}
         </FormControl>
         {/* //LINK confirm password */}
@@ -74,7 +99,7 @@ export default function SignUpForm() {
           </FormLabel>
           <Input
             id="confirm-password"
-            placeholder="Confirm your password"
+            placeholder="Please enter your password again"
             type={"password"}
             {...register("confirmPassword")}
           />

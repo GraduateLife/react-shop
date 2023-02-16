@@ -7,7 +7,7 @@ export default function BrandDisplay() {
   return (
     <HStack>
       {/* //LINK - logo */}
-      <BrandLogo boxSize={16} color={"brand.500"} />
+      <BrandLogo boxSize={16} color={"brand"} />
       {/* //LINK - brand name */}
       {isDesktop && (
         <Text fontFamily="Tangerine" fontSize={"56"} color="shadow.heavy">

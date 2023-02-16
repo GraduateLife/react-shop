@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const SignUpValidator = z
   .object({
+    nickname: z.string(),
     email: z.string().email({ message: "Your email address is not valid" }),
     password: z
       .string()

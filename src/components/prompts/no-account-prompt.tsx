@@ -9,7 +9,7 @@ function NoAccountPrompt() {
       justify={"center"}
       align={"center"}
       border={"8px"}
-      borderColor={"brand.500"}
+      borderColor={"brand"}
     >
       <Flex
         direction={"column"}

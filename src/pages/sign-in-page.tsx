@@ -1,7 +1,7 @@
 import { Heading, Flex, Text, GridItem, Center } from "@chakra-ui/react";
 import ResponsiveGrid from "../components/layout/responsive-grid";
 import SignInForm from "../components/forms/sign-in-form";
-import ProviderButtons from "../components/providers/provider-buttons";
+import ProviderButtons from "../components/provider_login/provider-buttons";
 import NoAccountPrompt from "../components/prompts/no-account-prompt";
 
 //FIXME - firebase communication
@@ -15,7 +15,7 @@ export default function SignInPage() {
           <Flex w={"100%"} direction={"column"} align="center" mt={4} px={12}>
             <SignInForm />
             <Center my={1.5}>
-              <Text fontSize={"md"} color={"gray.500"}>
+              <Text fontSize={"md"} color={"shadow.medium"}>
                 or
               </Text>
             </Center>

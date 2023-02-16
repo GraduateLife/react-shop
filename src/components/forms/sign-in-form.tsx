@@ -13,7 +13,6 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInInformation, SignInValidator } from "./sign-in-form.validator";
 import { useNavigate } from "react-router-dom";
-import { isCorrectUser } from "../../__DUMMY__DATA__/user/correct-user";
 
 export default function SignInForm() {
   const {
@@ -29,7 +28,7 @@ export default function SignInForm() {
     return new Promise((resolve) => {
       setTimeout(() => {
         console.log(JSON.stringify(formInputs));
-        if (isCorrectUser(formInputs)) {
+        if (true) {
           navigate("/");
         } else {
           alert("not the right person");

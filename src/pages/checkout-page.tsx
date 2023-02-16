@@ -38,7 +38,7 @@ export default function CheckoutPage() {
             width={"inherit"}
             py={6}
             borderY={"8px"}
-            borderColor={"brand.500"}
+            borderColor={"brand"}
           >
             <CheckoutList cartList={cartList} />
           </Center>

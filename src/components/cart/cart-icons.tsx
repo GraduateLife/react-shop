@@ -4,12 +4,17 @@ import React from "react";
 import { VscChevronDown, VscChevronUp } from "react-icons/vsc";
 import { RiDeleteBin6Line, RiShoppingCartLine } from "react-icons/ri";
 export function CartIcon() {
-  return <Icon as={RiShoppingCartLine} boxSize={10} color={"brand.500"}></Icon>;
+  return <Icon as={RiShoppingCartLine} boxSize={10} color={"brand"}></Icon>;
 }
 
 export function RemoveIcon(props: any) {
   return (
-    <Icon as={RiDeleteBin6Line} boxSize={5} color={"gray.500"} {...props} />
+    <Icon
+      as={RiDeleteBin6Line}
+      boxSize={5}
+      color={"shadow.medium"}
+      {...props}
+    />
   );
 }
 

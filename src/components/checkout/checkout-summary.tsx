@@ -14,7 +14,7 @@ export default function CheckoutSummary() {
       direction={"column"}
       align={"center"}
       justify={"space-between"}
-      bg={"shadow.shallow"}
+      bg={"shadow.light"}
       h={80}
       p={4}
     >
