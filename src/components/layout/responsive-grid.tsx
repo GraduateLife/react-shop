@@ -6,7 +6,7 @@ type GridProp = {
   mobileCol: number;
   children: React.ReactNode;
 };
-
+//FIXME - not very responsive
 export default function ResponsiveGrid<P extends GridProp>({
   desktopCol,
   mobileCol,

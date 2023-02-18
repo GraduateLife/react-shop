@@ -12,8 +12,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpInformation, SignUpValidator } from "./sign-up-form.validator";
 import { useNavigate } from "react-router-dom";
-import { createUser } from "../../firebase/authentication";
-import { createUserDoc } from "../../firebase/firestore";
+import { signUpWithEmail } from "../../firebase/services/authentication";
+
+import { assertFireBaseError } from "../../utils/error-assertion";
+import { useDispatch } from "react-redux";
+import { writeUser } from "../../store/user/user.slice";
+import { userInformationFallback } from "../../firebase/schema";
 
 //FIXME - ugly
 export default function SignUpForm() {
@@ -23,21 +27,17 @@ export default function SignUpForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignUpInformation>({ resolver: zodResolver(SignUpValidator) });
   const navigate = useNavigate();
-  //ANCHOR react hook form submit handler must return promise to override isSubmitting
-  const handleSubmit = async (formInputs: SignUpInformation) => {
-    let { nickname, email, password } = formInputs;
-    if (nickname.trim().length === 0) {
-      nickname = Math.random().toString(36).slice(-8);
-    }
+  const dispatch = useDispatch();
 
-    try {
-      const firebaseResponse = await createUser(email, password);
-      console.log(firebaseResponse);
-      await createUserDoc(firebaseResponse, { displayName: nickname });
-      navigate("/");
-    } catch (e: any) {
-      if (e.code === "auth/email-already-in-use") alert(e);
+  const handleSubmit = async (formInputs: SignUpInformation) => {
+    let { displayName, email, password } = formInputs;
+    if (displayName.trim.length === 0) {
+      displayName = userInformationFallback.displayName;
     }
+    writeUser({
+      email,
+      password,
+    });
   };
 
   return (
@@ -47,15 +47,13 @@ export default function SignUpForm() {
           <FormLabel htmlFor="nickname">Nickname (Optional)</FormLabel>
           <Input
             id="nickname"
-            placeholder="Your nickname"
-            {...register("nickname")}
+            placeholder="Tell us how we should call you"
+            {...register("displayName")}
           />
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
-            <FormHelperText>
-              Tell us your nickname or we will automatically create one
-            </FormHelperText>
+            <FormHelperText>Or we will automatically create one</FormHelperText>
           )}
         </FormControl>
         {/* //LINK - email address */}
@@ -115,12 +113,7 @@ export default function SignUpForm() {
         </FormControl>
         {/* //LINK - submit btn */}
         <Center>
-          <Button
-            mt={4}
-            colorScheme="orange"
-            isLoading={isSubmitting}
-            type="submit"
-          >
+          <Button mt={4} isLoading={isSubmitting} type="submit">
             register
           </Button>
         </Center>

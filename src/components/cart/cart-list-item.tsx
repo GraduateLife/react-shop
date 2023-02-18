@@ -1,7 +1,7 @@
 import { Flex, IconButton, Image, Box, Text } from "@chakra-ui/react";
 
 import React from "react";
-import { CartItem } from "../../models/cart-item.type";
+import { CartItem } from "../../models/cargo.type";
 import { useDispatch } from "react-redux";
 import {
   ACTION_MINUS,

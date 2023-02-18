@@ -1,15 +1,12 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 
 import React from "react";
-import { signInWithGoogle } from "../../firebase/authentication";
-import { createUserDoc } from "../../firebase/firestore";
-
+import { signInWithGoogle } from "../../firebase/services/user-creation";
 import { GoogleIcon } from "./provider-icons";
 
 export default function ProviderButtons() {
   const handleGoogleBtnClick = async () => {
-    const res = await signInWithGoogle();
-    await createUserDoc(res);
+    await signInWithGoogle();
   };
   return (
     <ButtonGroup size={"long"}>

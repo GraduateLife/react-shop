@@ -1,6 +1,5 @@
 import { z } from "zod";
 export const SignInValidator = z.object({
-  nickname: z.string(),
   email: z.string().email({ message: "This is not a valid email address" }),
   password: z.string().regex(
     //eslint-disable-next-line no-useless-escape

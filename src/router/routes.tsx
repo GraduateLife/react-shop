@@ -5,7 +5,7 @@ import CheckoutPage from "../pages/checkout-page";
 import ProductsPage from "../pages/products-page";
 import SignInPage from "../pages/sign-in-page";
 import SignUpPage from "../pages/sign-up-page";
-import Navbar from "./navbar";
+import Navbar from "../components/navbar/navbar";
 
 function WebsitePages() {
   return (

@@ -8,7 +8,6 @@ import {
   FormHelperText,
   Flex,
   Center,
-  VStack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInInformation, SignInValidator } from "./sign-in-form.validator";
@@ -21,22 +20,26 @@ export default function SignInForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignInInformation>({ resolver: zodResolver(SignInValidator) });
   const navigate = useNavigate();
-  //ANCHOR react hook form submit handler must return promise to override isSubmitting
-  const handleSubmit = (formInputs: SignInInformation) => {
-    console.log(formInputs);
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        console.log(JSON.stringify(formInputs));
-        if (true) {
-          navigate("/");
-        } else {
-          alert("not the right person");
-        }
-        resolve(null);
-      }, 1000);
-    });
+  const handleSubmit = () => {
+    navigate("/");
   };
+  // const handleSubmit = (formInputs: SignInInformation) => {
+  //   alert(1);
+  //   console.log(formInputs);
+
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       console.log(JSON.stringify(formInputs));
+  //       if (true) {
+  //         navigate("/");
+  //       } else {
+  //         alert("not the right person");
+  //       }
+  //       resolve(null);
+  //     }, 1000);
+  //   });
+  // };
 
   return (
     <Flex w={"inherit"} direction={"column"} align={"center"}>
@@ -73,13 +76,7 @@ export default function SignInForm() {
 
         {/* //LINK - submit btn */}
         <Center>
-          <Button
-            mt={8}
-            size={"long"}
-            colorScheme="orange"
-            isLoading={isSubmitting}
-            type="submit"
-          >
+          <Button mt={8} size={"long"} isLoading={isSubmitting} type={"submit"}>
             SIGN IN
           </Button>
         </Center>

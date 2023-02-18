@@ -6,7 +6,7 @@ import redCoat from "./coatImages/red-coat.png";
 import greenCoat from "./coatImages/green-coat.png";
 import orangeCoat from "./coatImages/orange-coat.png";
 import yellowCoat from "./coatImages/yellow-coat.png";
-import { CartItem } from "../../models/cart-item.type";
+import { CartItem } from "../../models/cargo.type";
 
 const allProducts: CartItem[] = [
   {

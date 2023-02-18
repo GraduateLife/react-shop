@@ -5,7 +5,7 @@ import {
   createUserWithEmailAndPassword as fb_createUserWithEmailAndPassword,
 } from "firebase/auth";
 
-import { app } from "./initialize";
+import { app } from "../initialization";
 
 const GoogleProvider = new fb_GoogleAuthProvider();
 GoogleProvider.setCustomParameters({
@@ -13,8 +13,13 @@ GoogleProvider.setCustomParameters({
 });
 
 const authToken = fb_getAuth(app);
-export const signInWithGoogle = () =>
+//TODO - might use factory to improve but not essential right now
+export const signInWithGooglePopup = () =>
   fb_signInWithPopup(authToken, GoogleProvider);
 
-export const createUser = async (email: string, password: string) =>
+/**
+ *
+ * @remark fails if account exists.
+ */
+export const signUpWithEmail = async (email: string, password: string) =>
   await fb_createUserWithEmailAndPassword(authToken, email, password);

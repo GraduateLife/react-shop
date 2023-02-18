@@ -16,6 +16,7 @@ export default function PreviewCard({ category }: IProp) {
       w={"inherit"}
       bgImage={CateImageUrl}
       bgRepeat="no-repeat"
+      bgPos="center"
       bgSize="100%"
     >
       {/* //LINK - button */}

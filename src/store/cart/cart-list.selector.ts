@@ -1,13 +1,13 @@
-import { CartItem } from "../../models/cart-item.type";
+import { CartItem } from "../../models/cargo.type";
 import { RootState } from "../store";
 
-export const selectCartList = (state: RootState): CartItem[] => state.cartList;
+export const selectCartList = (state: RootState): CartItem[] => state._cartList;
 
 export const selectCartOverallQuantity = (state: RootState): number =>
-  state.cartList.reduce((acc, item) => acc + item.ItemQuantity, 0);
+  state._cartList.reduce((acc, item) => acc + item.ItemQuantity, 0);
 
 export const selectCartOverallPrice = (state: RootState): number =>
-  state.cartList.reduce(
+  state._cartList.reduce(
     (acc, item) => acc + item.ItemQuantity * item.ProdPrice,
     0
   );

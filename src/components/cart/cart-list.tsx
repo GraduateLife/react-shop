@@ -1,6 +1,6 @@
 import { Box, Center } from "@chakra-ui/react";
 
-import { CartItem } from "../../models/cart-item.type";
+import { CartItem } from "../../models/cargo.type";
 
 import CartListItem from "./cart-list-item";
 import { CART_BEHAVIORS } from "./component-behaviors";

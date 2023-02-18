@@ -6,7 +6,7 @@ export const theme = extendTheme({
   },
 
   colors: {
-    brand: "#DD6B20",
+    brand: "#DD6BFF",
     google: {
       100: "#4285F4",
       900: "#2B6CB0",
@@ -62,7 +62,7 @@ export const theme = extendTheme({
       defaultProps: {
         size: "md",
         variant: "solid",
-        colorScheme: "orange",
+        colorScheme: "purple",
       },
     },
     Icon: {

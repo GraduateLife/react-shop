@@ -1,5 +1,5 @@
-import { CartItem } from "../../models/cart-item.type";
-import { Product } from "../../models/product.type";
+import { CartItem } from "../../models/cargo.type";
+import { Product } from "../../models/cargo.type";
 
 export const addOneItem = (
   sourceCartList: CartItem[],

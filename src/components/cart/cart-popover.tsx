@@ -45,8 +45,8 @@ function CartPopover() {
     }, 1500);
   };
   const handlePopoverClose = () => {
+    console.log("2");
     //TODO - write to fb
-    console.log("cl");
   };
 
   const navigate = useNavigate();

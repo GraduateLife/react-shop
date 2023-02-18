@@ -27,4 +27,4 @@ function NoAccountPrompt() {
     </Flex>
   );
 }
-export default React.memo(NoAccountPrompt);
+export default NoAccountPrompt;

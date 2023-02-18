@@ -1,6 +1,6 @@
 import { Box, Center, Heading, Text } from "@chakra-ui/react";
 
-import { CartItem } from "../../models/cart-item.type";
+import { CartItem } from "../../models/cargo.type";
 import CheckoutListItem from "./checkout-list-item";
 import { CHECKLIST_BEHAVIORS } from "./component-behavior";
 

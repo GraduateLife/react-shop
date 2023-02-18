@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CartItem } from "../../models/cart-item.type";
-import { Product } from "../../models/product.type";
+import { CartItem } from "../../models/cargo.type";
+import { Product } from "../../models/cargo.type";
 import { fetchAllCartItems } from "../../__DUMMY__DATA__/products/cartItems-list";
 import { addOneItem, reduceOneItem, removeOneItem } from "./cart-list.effect";
 
