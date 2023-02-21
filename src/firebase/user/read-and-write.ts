@@ -1,21 +1,18 @@
 import { UserCredential } from "firebase/auth";
-import { CartItem } from "../../models/cargo.type";
+
 import { UserWebsite } from "../../models/user.types";
-import { writeCartList } from "../cartItems/read-and-write";
-import { readCollection, readOneDocument, writeOne } from "../write-and-read";
+import { ERR_MSGS } from "../../utils/error-assertion";
+
+import { isThisDocumentWritten, readCollection, writeOne } from "../db-rw";
+import { authToken } from "./user-operations";
 
 export const writeUserFromProvider = async (
   providerResponse: UserCredential
 ) => {
   const { displayName, email, uid } = providerResponse.user;
-  let readDocRes;
-  try {
-    await readOneDocument<UserWebsite>("users", uid);
-  } catch (err) {
-    readDocRes = null;
-  }
+  const docIsWritten = await isThisDocumentWritten("users", uid);
 
-  if (!readDocRes) {
+  if (!docIsWritten) {
     const isInformationReady = displayName && email && uid;
     if (isInformationReady) {
       await writeOne<UserWebsite>("users", uid, {
@@ -25,45 +22,58 @@ export const writeUserFromProvider = async (
         UserPassword: null,
         UserIsLoggedIn: true,
       });
-      await writeOne("carts", uid, { items: [] });
-      return "ok";
+      return await writeOne("carts", uid, { items: [] });
     }
   }
-  throw new Error("Hey!Hey! User document already exists!");
+  return "write will not be executed";
 };
 
 export const writeUserFromMembership = async (preparedUser: UserWebsite) => {
   const { UserId } = preparedUser;
-  let readDocRes;
-  try {
-    await readOneDocument<UserWebsite>("users", UserId);
-  } catch (err) {
-    readDocRes = null;
-  }
-  if (!readDocRes) {
+  const docIsWritten = await isThisDocumentWritten("users", UserId);
+  if (!docIsWritten) {
     await writeOne<UserWebsite>("users", UserId, {
       ...preparedUser,
     });
-    await writeOne("carts", UserId, { items: [] });
-    return "ok";
+    return await writeOne("carts", UserId, { items: [] });
   }
-  throw new Error("Hey!Hey! User document already exists!");
+  return "write will not be executed";
 };
 
 export const findUserById = async (targetId: string) => {
   const dbRes = await readCollection<UserWebsite>("users");
   const targetUser = dbRes.find((item) => item.UserEmail === targetId);
   if (!targetUser) {
-    throw new Error("couldn't find this user by email");
+    throw new Error("couldn't find this user by id");
   }
   return targetUser;
 };
 
 export const findUserByEmail = async (targetEmail: string) => {
   const dbRes = await readCollection<UserWebsite>("users");
-  const targetUser = dbRes.find((item) => item.UserEmail === targetEmail);
+  const targetUser = dbRes.find(
+    (item) => item.UserEmail === targetEmail.toLowerCase()
+  );
   if (!targetUser) {
     throw new Error("couldn't find this user by email");
   }
   return targetUser;
+};
+
+export const findUserFromProvider = (): UserWebsite => {
+  const user = authToken.currentUser;
+
+  if (user !== null) {
+    const { displayName, email, uid } = user.providerData[0];
+    if (displayName && email && uid) {
+      return {
+        UserId: uid,
+        UserDisplayName: displayName,
+        UserEmail: email.toLowerCase(),
+        UserPassword: null,
+        UserIsLoggedIn: true,
+      };
+    }
+  }
+  throw new Error("couldn't find this user by provider");
 };

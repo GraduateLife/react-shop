@@ -4,7 +4,7 @@ import { Flex } from "@chakra-ui/react";
 import BrandDisplay from "./brand-display";
 import NavbarButtons from "./navbar-buttons";
 
-//FIXME - logout button
+//FIXME - 当前用户信息
 
 export default function Navbar() {
   return (

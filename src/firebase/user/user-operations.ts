@@ -4,14 +4,18 @@ import {
   getAuth as fb_getAuth,
   signInWithPopup as fb_signInWithPopup,
   createUserWithEmailAndPassword as fb_createUserWithEmailAndPassword,
+  signOut as fb_signOut,
 } from "firebase/auth";
 import {
   writeUserFromMembership,
   writeUserFromProvider,
 } from "./read-and-write";
 import { UserWebsite } from "../../models/user.types";
+import { ERR_MSGS } from "../../utils/error-assertion";
+import { writeOne } from "../db-rw";
 
 export const authToken = fb_getAuth(app);
+
 export const createPopup = (name: PROVIDERS) =>
   fb_signInWithPopup(authToken, createProviderInstance(name));
 
@@ -28,9 +32,19 @@ export const startSignInWithProvider = async (name: PROVIDERS) => {
 export const startSignUpWithEmail = async (preparedUser: UserWebsite) => {
   const { UserEmail, UserPassword, UserId } = preparedUser;
   if (UserPassword) {
-    await fb_createUserWithEmailAndPassword(authToken, UserEmail, UserPassword);
+    await fb_createUserWithEmailAndPassword(
+      authToken,
+      UserEmail.toLowerCase(),
+      UserPassword
+    );
     const dbRes = await writeUserFromMembership(preparedUser);
     if (dbRes === "ok") return UserId;
   }
-  throw new Error("impossible case");
+  throw new Error(ERR_MSGS.UNEXPECTED_CASE);
+};
+
+export const startSignOut = async () => {
+  await fb_signOut(authToken);
+
+  return "ok";
 };

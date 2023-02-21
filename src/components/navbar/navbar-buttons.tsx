@@ -2,7 +2,8 @@ import { Box, ButtonGroup, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { Link } from "react-router-dom";
 import CartPopover from "../cart/cart-popover";
-import { ShopIcon, UserIcon } from "./navbar-icons";
+import { ShopIcon, SignOutIcon, UserIcon } from "./navbar-icons";
+import SignOutButton from "./sign-out-button";
 
 //to change cart icon, please go to cart component folder
 export default function NavbarButtons() {
@@ -20,6 +21,7 @@ export default function NavbarButtons() {
       </ButtonGroup>
       {/* STUB cart component is here! */}
       <CartPopover />
+      <SignOutButton ml={4} />
     </Box>
   );
 }

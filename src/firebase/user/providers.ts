@@ -1,4 +1,5 @@
 import { GoogleAuthProvider as fb_GoogleAuthProvider } from "firebase/auth";
+import { ERR_MSGS } from "../../utils/error-assertion";
 
 //LINK - implementation of separate providers
 const manufactureGoogleProvider = () => {
@@ -20,6 +21,6 @@ export const createProviderInstance = (providerName: PROVIDERS) => {
       return manufactureGoogleProvider();
 
     default:
-      throw new Error("not supported provider: " + providerName);
+      throw new Error(ERR_MSGS.NOT_SUPPORTED_PROVIDER);
   }
 };

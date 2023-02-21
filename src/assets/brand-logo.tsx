@@ -1,8 +1,8 @@
-import { Icon } from "@chakra-ui/react";
+import { Icon, IconProps } from "@chakra-ui/react";
 
 import React from "react";
 
-export default function BrandLogo(props: any) {
+export default function BrandLogo(props: Partial<IconProps>) {
   return (
     <Icon viewBox="0 0 24 24" {...props}>
       <path

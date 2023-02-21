@@ -12,14 +12,12 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpInformation, SignUpValidator } from "./sign-up-form.validator";
 import { useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { startSignUpWithEmail } from "../../firebase/user/sign-in-or-sign-up";
+import { useDispatch } from "react-redux";
+
 import { prepareMembershipUserDataWithFallback } from "../../firebase/user/prepare-user";
 import { AppDispatch } from "../../store/store";
 import { signUpByEmail } from "../../store/user/user.slice";
-import { selectUserRequestStatus } from "../../store/user/user.selector";
 
-//FIXME - ugly
 export default function SignUpForm() {
   const {
     handleSubmit: RHF_handler,

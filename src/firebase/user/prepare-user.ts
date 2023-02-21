@@ -9,8 +9,8 @@ export const prepareMembershipUserDataWithFallback = (
   return {
     UserId: nanoid(),
     UserDisplayName: displayName,
-    UserEmail: email,
+    UserEmail: email.toLowerCase(),
     UserPassword: password,
-    UserIsLoggedIn: true,
+    UserIsLoggedIn: false,
   };
 };

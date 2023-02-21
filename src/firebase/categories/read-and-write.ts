@@ -1,6 +1,6 @@
 import { Category } from "../../models/category.type";
 
-import { writeOne, readCollection } from "../write-and-read";
+import { writeOne, readCollection } from "../db-rw";
 
 const CateEntity: Category[] = [
   {

@@ -14,8 +14,13 @@ import { SignInInformation, SignInValidator } from "./sign-in-form.validator";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
-import { selectUserPassword } from "../../store/user/user.selector";
-import { signInByEmail } from "../../store/user/user.slice";
+import {
+  selectUserId,
+  selectUserLogin,
+  selectUserPassword,
+  selectUserRequestStatus,
+} from "../../store/user/user.selector";
+import { ACTION_RESET_RQ, signInByEmail } from "../../store/user/user.slice";
 
 export default function SignInForm() {
   const {
@@ -24,15 +29,22 @@ export default function SignInForm() {
     formState: { errors, isSubmitting },
   } = useForm<SignInInformation>({ resolver: zodResolver(SignInValidator) });
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const appDispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
   const selectPassword = useSelector(selectUserPassword);
-
+  const selectRequestState = useSelector(selectUserRequestStatus);
+  const userId = useSelector(selectUserId);
+  const isLogIn = useSelector(selectUserLogin);
+  if (selectRequestState !== "idle") dispatch(ACTION_RESET_RQ);
   const handleSubmit = async (formInputs: SignInInformation) => {
-    const { email, password } = formInputs;
-    await dispatch(signInByEmail(email));
-    if (selectPassword === password) {
-      navigate("/");
-    } else alert("password error");
+    const { email, password: enteredPwd } = formInputs;
+    appDispatch(signInByEmail(email)).then(() => {
+      if (selectPassword) {
+        if (selectPassword !== enteredPwd) alert("not right pwd");
+        if (userId === "") alert("not reg");
+        else navigate("/");
+      }
+    });
   };
 
   return (
@@ -70,7 +82,12 @@ export default function SignInForm() {
 
         {/* //LINK - submit btn */}
         <Center>
-          <Button mt={8} size={"long"} isLoading={isSubmitting} type={"submit"}>
+          <Button
+            mt={8}
+            size={"long"}
+            isLoading={selectRequestState !== "succeeded"}
+            type={"submit"}
+          >
             SIGN IN
           </Button>
         </Center>

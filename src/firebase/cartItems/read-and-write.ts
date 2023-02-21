@@ -1,7 +1,7 @@
 import { CartItem } from "../../models/cargo.type";
-import { readCollection, readOneDocument, writeOne } from "../write-and-read";
+import { readCollection, readOneDocument, writeOne } from "../db-rw";
 
-const itemEntity: CartItem[] = [
+export const itemEntity: CartItem[] = [
   {
     ProdId: "qsq",
     ProdName: "red hat",
@@ -99,25 +99,14 @@ const itemEntity: CartItem[] = [
     ItemQuantity: 9,
   },
 ];
+type CartListSchema = { item: CartItem[] };
 
-export const writeCartList = async (userId: string, items = itemEntity) => {
-  items.forEach(async (c) => {
-    await writeOne<CartItem>("carts", userId, c);
-  });
-  return "ok";
+export const writeCartList = async (userId: string, list: CartItem[]) => {
+  return await writeOne("carts", userId, { item: [...list] });
 };
 
 export const readCartList = async (userId: string) => {
-  const res = await readOneDocument("carts", userId);
+  const res = await readOneDocument<CartListSchema>("carts", userId);
   console.log(res);
-  return [
-    {
-      ProdId: "qsql",
-      ProdName: "red hatbuyimvvew",
-      ProdPrice: 99,
-      ProdImageUrl: "redHat",
-
-      ItemQuantity: 9,
-    },
-  ];
+  return res.item;
 };

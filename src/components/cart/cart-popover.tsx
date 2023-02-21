@@ -36,8 +36,6 @@ import { CartIcon } from "./cart-icons";
 import CartList from "./cart-list";
 import { CART_BEHAVIORS } from "./component-behaviors";
 
-//FIXME - saga
-
 //memoized
 function CartPopover() {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,12 +51,8 @@ function CartPopover() {
 
   const handleCartIconBtnClick = async () => {
     setCartListIsPending(true);
-
-    await dispatch(fetchCartList(userId));
-
-    if (cartFetchStatus === "idle") {
-      setCartListIsPending(false);
-    }
+    if (cartFetchStatus === "idle") await dispatch(fetchCartList(userId));
+    if (cartFetchStatus === "succeeded") setCartListIsPending(false);
   };
   const handlePopoverClose = () => {
     console.log("2");

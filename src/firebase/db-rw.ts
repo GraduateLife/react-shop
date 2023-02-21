@@ -6,6 +6,7 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
+import { ERR_MSGS } from "../utils/error-assertion";
 
 import { db } from "./initialization";
 
@@ -41,7 +42,17 @@ export const readOneDocument = async <T>(
   const docRef = getDocRef(db, collectionName, docName);
   const mightDocSnapshot = await getDoc(docRef);
   if (mightDocSnapshot.exists()) return mightDocSnapshot.data() as T;
-  throw new Error("could not read such document");
+  throw new Error(ERR_MSGS.NOT_EXISTED_DOCUMENT);
+};
+
+export const isThisDocumentWritten = async (
+  collectionName: string,
+  docName: string
+): Promise<boolean> => {
+  const docRef = getDocRef(db, collectionName, docName);
+  const mightDocSnapshot = await getDoc(docRef);
+  if (mightDocSnapshot.exists()) return true;
+  return false;
 };
 
 export const readCollection = async <T>(collectionName: string) => {
@@ -52,6 +63,5 @@ export const readCollection = async <T>(collectionName: string) => {
   queryRes.forEach((x) => {
     container.push(x.data() as T);
   });
-
   return container;
 };
