@@ -24,15 +24,18 @@ export default function ProviderButtons() {
   const handleGoogleBtnClick = async (providerName: string) => {
     if (userRequestStatus !== "idle") dispatch(ACTION_RESET_RQ());
     const res = await appDispatch(signInByProvider(providerName as PROVIDERS));
-    toast({
-      position: "top",
-      description: `Welcome back! ${
-        (res.payload as UserWebsite).UserDisplayName
-      }`,
-      status: "success",
-      duration: 4000,
-      isClosable: true,
-    });
+    if (userRequestStatus === "succeeded") {
+      toast({
+        position: "top",
+        description: `Welcome back! ${
+          (res.payload as UserWebsite).UserDisplayName
+        }`,
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+    }
+
     navigate("/");
   };
   return (
