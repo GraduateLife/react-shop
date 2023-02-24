@@ -1,5 +1,5 @@
 require("dotenv").config();
-const stripe = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
+const stripe = require("stripe")(`${process.env.STRIPE_PRIVATE_KEY}`);
 
 exports.handler = async (event) => {
   try {
@@ -17,7 +17,7 @@ exports.handler = async (event) => {
     console.log(err);
     return {
       statusCode: 400,
-      body: JSON.stringify({ err }),
+      body: JSON.stringify({ hi: "hi?" }),
     };
   }
 };
