@@ -7,6 +7,9 @@ import { theme } from "./theme/chakra.config";
 //^ VScode? F1=>TypeScript:Select typeScript version=>Use Workspace Version
 
 function App() {
+  // useEffect(() => {
+  //   writeCartList("dJEx9tYeqTeeBLkxZpDYfWn4sVd2", itemEntity);
+  // }, []);
   return (
     <ChakraProvider theme={theme}>
       <WebsitePages />

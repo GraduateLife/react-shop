@@ -1,23 +1,36 @@
 import { IconButton, IconButtonProps } from "@chakra-ui/react";
-import React from "react";
+
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { AppDispatch } from "../../store/store";
+import { useToast } from "@chakra-ui/react";
 import {
-  selectUserLogin,
+  selectUserData,
   selectUserRequestStatus,
 } from "../../store/user/user.selector";
-import { signOut } from "../../store/user/user.slice";
+import { ACTION_USER_LOGIN_CHANGE, signOut } from "../../store/user/user.slice";
 import { SignOutIcon } from "./navbar-icons";
 
 function SignOutButton(props: Partial<IconButtonProps>) {
-  const dispatch = useDispatch<AppDispatch>();
-  const userIsLogin = useSelector(selectUserLogin);
+  const appDispatch = useDispatch<AppDispatch>();
+  const dispatch = useDispatch();
+  const currUser = useSelector(selectUserData);
+  const navigate = useNavigate();
+  const toast = useToast();
   const userRequestStatus = useSelector(selectUserRequestStatus);
   const handleSignOut = async () => {
-    if (userIsLogin) {
-      await dispatch(signOut());
+    if (currUser.UserIsLoggedIn) {
+      await appDispatch(signOut(currUser.UserEmail));
       if (userRequestStatus === "succeeded")
-        alert("You have successfully signed out");
+        dispatch(ACTION_USER_LOGIN_CHANGE(false));
+      navigate("/");
+      toast({
+        position: "top",
+        description: "You have successfully signed out.",
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
     }
   };
 
@@ -25,7 +38,12 @@ function SignOutButton(props: Partial<IconButtonProps>) {
     <IconButton
       variant={"invisible-active"}
       aria-label="sign out"
-      icon={<SignOutIcon color={userIsLogin ? "red" : "gray.400"} />}
+      isDisabled={currUser.UserIsLoggedIn === false}
+      icon={
+        <SignOutIcon
+          color={currUser.UserIsLoggedIn === true ? "red" : undefined}
+        />
+      }
       {...props}
       onClick={() => handleSignOut()}
     />

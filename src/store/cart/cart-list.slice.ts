@@ -1,9 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import { readCartList } from "../../firebase/cartItems/read-and-write";
+import { findUserByEmail } from "../../firebase/user/read-and-write";
 import { CartItem } from "../../models/cargo.type";
 import { Product } from "../../models/cargo.type";
-import { assertFireBaseError } from "../../utils/error-assertion";
+
 import { AsyncState } from "../types";
 
 import { addOneItem, reduceOneItem, removeOneItem } from "./cart-list.effect";
@@ -23,8 +24,9 @@ const cartListInitialState: CartListState = {
 
 export const fetchCartList = createAsyncThunk(
   ASYNC_REDUCER_NAME,
-  async (targetUserId: string) => {
-    const fetched = await readCartList(targetUserId);
+  async (targetUserEmail: string) => {
+    const foundUser = await findUserByEmail(targetUserEmail);
+    const fetched = await readCartList(foundUser.UserId);
     return fetched;
   }
 );
@@ -54,9 +56,6 @@ const cartListSlice = createSlice({
       })
       .addCase(fetchCartList.rejected, (state, action) => {
         state.requestStatus = "failed";
-        if (assertFireBaseError(action.error)) {
-          state.requestError = action.error;
-        } else throw action.error;
       });
   },
 });

@@ -8,43 +8,81 @@ import {
   FormHelperText,
   Flex,
   Center,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInInformation, SignInValidator } from "./sign-in-form.validator";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../../store/store";
+import { selectUserRequestStatus } from "../../store/user/user.selector";
 import {
-  selectUserId,
-  selectUserLogin,
-  selectUserPassword,
-  selectUserRequestStatus,
-} from "../../store/user/user.selector";
-import { ACTION_RESET_RQ, signInByEmail } from "../../store/user/user.slice";
+  ACTION_RESET_RQ,
+  ACTION_USER_LOGIN_CHANGE,
+  signInByEmail,
+} from "../../store/user/user.slice";
+
+import { updateField } from "../../firebase/db-rw";
+import { UserWebsite } from "../../models/user.types";
 
 export default function SignInForm() {
   const {
     handleSubmit: RHF_handler,
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignInInformation>({ resolver: zodResolver(SignInValidator) });
   const navigate = useNavigate();
   const appDispatch = useDispatch<AppDispatch>();
   const dispatch = useDispatch();
-  const selectPassword = useSelector(selectUserPassword);
+  const toast = useToast();
   const selectRequestState = useSelector(selectUserRequestStatus);
-  const userId = useSelector(selectUserId);
-  const isLogIn = useSelector(selectUserLogin);
-  if (selectRequestState !== "idle") dispatch(ACTION_RESET_RQ);
+  //STUB final resort
+
+  // const isLogIn = useSelector(selectUserLogin);
+
   const handleSubmit = async (formInputs: SignInInformation) => {
+    if (selectRequestState !== "idle") dispatch(ACTION_RESET_RQ());
     const { email, password: enteredPwd } = formInputs;
-    appDispatch(signInByEmail(email)).then(() => {
-      if (selectPassword) {
-        if (selectPassword !== enteredPwd) alert("not right pwd");
-        if (userId === "") alert("not reg");
-        else navigate("/");
-      }
-    });
+    const res = await appDispatch(signInByEmail(email));
+
+    if (typeof (res.payload as UserWebsite).UserPassword === "object") {
+      toast({
+        position: "top",
+        description:
+          "You created your account via our providers, please try again with provider login",
+        status: "warning",
+        duration: 4000,
+        isClosable: true,
+      });
+    } else if (
+      typeof (res.payload as UserWebsite).UserPassword === "string" &&
+      (res.payload as UserWebsite).UserPassword!.length >= 8 &&
+      (res.payload as UserWebsite).UserPassword !== enteredPwd
+    )
+      // alert("not right pwd");
+      toast({
+        position: "top",
+        description: "Your password is incorrect",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+    else {
+      dispatch(ACTION_USER_LOGIN_CHANGE(true));
+      await updateField("users", (res.payload as UserWebsite).UserId, {
+        UserIsLoggedIn: true,
+      });
+      toast({
+        position: "top",
+        description: `Welcome back! ${
+          (res.payload as UserWebsite).UserDisplayName
+        }`,
+        status: "success",
+        duration: 4000,
+        isClosable: true,
+      });
+      navigate("/");
+    }
   };
 
   return (
@@ -61,7 +99,7 @@ export default function SignInForm() {
           {errors.email ? (
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
-            <FormHelperText>Please enter your email address</FormHelperText>
+            <FormHelperText>Tell us your email address</FormHelperText>
           )}
         </FormControl>
         {/* //LINK password */}
@@ -85,7 +123,7 @@ export default function SignInForm() {
           <Button
             mt={8}
             size={"long"}
-            isLoading={selectRequestState !== "succeeded"}
+            isLoading={selectRequestState === "loading"}
             type={"submit"}
           >
             SIGN IN

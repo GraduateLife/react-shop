@@ -5,6 +5,7 @@ import {
   query,
   getDocs,
   getDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { ERR_MSGS } from "../utils/error-assertion";
 
@@ -26,6 +27,15 @@ export const writeOne = async <T extends { [x: string]: any }>(
   batch.set(docRef, objectAsFields);
 
   await batch.commit();
+  return "ok";
+};
+export const updateField = async (
+  collectionName: string,
+  docName: string,
+  fieldToUpdate: { [x: string]: any }
+) => {
+  const docRef = getDocRef(db, collectionName, docName);
+  await updateDoc(docRef, fieldToUpdate);
   return "ok";
 };
 

@@ -3,7 +3,8 @@ export type CartItem = {
 } & Cargo;
 
 export type Product = {
-  ProdBelongsToCategory: string;
+  ProdDescription: string;
+  ProdBelongsTo: string;
 } & Cargo;
 
 type Cargo = {

@@ -1,9 +1,14 @@
 import { UserCredential } from "firebase/auth";
 
 import { UserWebsite } from "../../models/user.types";
-import { ERR_MSGS } from "../../utils/error-assertion";
 
-import { isThisDocumentWritten, readCollection, writeOne } from "../db-rw";
+import {
+  isThisDocumentWritten,
+  readCollection,
+  updateField,
+  writeOne,
+} from "../db-rw";
+import { UserSchema } from "./prepare-user";
 import { authToken } from "./user-operations";
 
 export const writeUserFromProvider = async (
@@ -15,14 +20,22 @@ export const writeUserFromProvider = async (
   if (!docIsWritten) {
     const isInformationReady = displayName && email && uid;
     if (isInformationReady) {
-      await writeOne<UserWebsite>("users", uid, {
+      await writeOne<UserSchema>("users", uid, {
         UserId: uid,
         UserDisplayName: displayName,
         UserEmail: email,
         UserPassword: null,
         UserIsLoggedIn: true,
+        UserCreatedAt: new Date(),
       });
       return await writeOne("carts", uid, { items: [] });
+    }
+  } else {
+    if (email) {
+      const targetUser = await findUserByEmail(email);
+      await updateField("users", targetUser.UserId, {
+        UserIsLoggedIn: true,
+      });
     }
   }
   return "write will not be executed";
@@ -32,8 +45,9 @@ export const writeUserFromMembership = async (preparedUser: UserWebsite) => {
   const { UserId } = preparedUser;
   const docIsWritten = await isThisDocumentWritten("users", UserId);
   if (!docIsWritten) {
-    await writeOne<UserWebsite>("users", UserId, {
+    await writeOne<UserSchema>("users", UserId, {
       ...preparedUser,
+      UserCreatedAt: new Date(),
     });
     return await writeOne("carts", UserId, { items: [] });
   }

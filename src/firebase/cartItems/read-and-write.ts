@@ -1,5 +1,5 @@
 import { CartItem } from "../../models/cargo.type";
-import { readCollection, readOneDocument, writeOne } from "../db-rw";
+import { readOneDocument, writeOne } from "../db-rw";
 
 export const itemEntity: CartItem[] = [
   {
@@ -99,14 +99,17 @@ export const itemEntity: CartItem[] = [
     ItemQuantity: 9,
   },
 ];
-type CartListSchema = { item: CartItem[] };
+type CartListSchema = { items: CartItem[] };
 
 export const writeCartList = async (userId: string, list: CartItem[]) => {
-  return await writeOne("carts", userId, { item: [...list] });
+  return await writeOne("carts", userId, { items: [...list] });
 };
 
 export const readCartList = async (userId: string) => {
   const res = await readOneDocument<CartListSchema>("carts", userId);
-  console.log(res);
-  return res.item;
+  try {
+    return res.items;
+  } catch (error) {
+    return [];
+  }
 };

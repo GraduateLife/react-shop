@@ -17,16 +17,16 @@ export default function CartList({ cartList }: IProp) {
         Cart is currently empty
       </Center>
     );
+  } else {
+    return (
+      <Box
+        minH={`${CART_BEHAVIORS.CART_EMPTY_HEIGHT}`}
+        maxH={74 * CART_BEHAVIORS.CART_ITEM_DISPLAY_UP_LIMIT}
+      >
+        {cartList.map((cartItem) => {
+          return <CartListItem key={cartItem.ProdId} cartItem={cartItem} />;
+        })}
+      </Box>
+    );
   }
-
-  return (
-    <Box
-      minH={`${CART_BEHAVIORS.CART_EMPTY_HEIGHT}`}
-      maxH={74 * CART_BEHAVIORS.CART_ITEM_DISPLAY_UP_LIMIT}
-    >
-      {cartList.map((cartItem) => {
-        return <CartListItem key={cartItem.ProdId} cartItem={cartItem} />;
-      })}
-    </Box>
-  );
 }

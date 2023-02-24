@@ -1,19 +1,18 @@
-import { Grid, useMediaQuery } from "@chakra-ui/react";
-import react from "react";
+import { Grid, GridProps, useMediaQuery } from "@chakra-ui/react";
 
-type GridProp = {
+type ResGridProp = {
   desktopCol: number;
   mobileCol: number;
   children: React.ReactNode;
-};
+} & GridProps;
 //FIXME - 并不是十分响应式
-export default function ResponsiveGrid<P extends GridProp>({
+export default function ResponsiveGrid({
   desktopCol,
   mobileCol,
   children,
   ...rest
-}: P) {
-  const [isDesktop] = useMediaQuery("(min-width: 1280px)");
+}: ResGridProp) {
+  const [isDesktop] = useMediaQuery("(min-width: 800px)");
   const gridCols = isDesktop
     ? `repeat(${desktopCol}, 1fr)`
     : `repeat(${mobileCol}, 1fr)`;

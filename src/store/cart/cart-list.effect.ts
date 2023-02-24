@@ -27,7 +27,7 @@ export const addOneItem = (
     ItemQuantity: 1,
   };
   //new item
-  return [...sourceCartList, { ...newCartItem }];
+  return [{ ...newCartItem }, ...sourceCartList];
 };
 
 export const reduceOneItem = (

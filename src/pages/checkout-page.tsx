@@ -6,10 +6,10 @@ import {
   Flex,
   GridItem,
   Heading,
-  Text,
 } from "@chakra-ui/react";
-import React from "react";
+
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import CheckoutList from "../components/checkout/checkout-list";
 import CheckoutSummary from "../components/checkout/checkout-summary";
@@ -24,7 +24,7 @@ export default function CheckoutPage() {
   const cartOverallQuantity = useSelector(selectCartOverallQuantity);
 
   return (
-    <ResponsiveGrid desktopCol={12} mobileCol={1} gap={10}>
+    <ResponsiveGrid desktopCol={12} mobileCol={1} mb={12}>
       <GridItem colSpan={8}>
         {/* //TODO hard coded px, responsive needed */}
         <Flex direction={"column"} align={"center"} w={"800px"}>
@@ -43,15 +43,13 @@ export default function CheckoutPage() {
             <CheckoutList cartList={cartList} />
           </Center>
           <ButtonGroup size={"long"} mt={4}>
-            <Button>Display more</Button>
-            <Text as={Box} px={4}>
-              or
-            </Text>
-            <Button>Continue shopping</Button>
+            <Link to={"/products"}>
+              <Button>Continue shopping</Button>
+            </Link>
           </ButtonGroup>
         </Flex>
       </GridItem>
-      <GridItem colSpan={4} pt={20}>
+      <GridItem colSpan={4} pt={20} pl={8}>
         <CheckoutSummary />
       </GridItem>
     </ResponsiveGrid>

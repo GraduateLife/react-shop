@@ -6,8 +6,10 @@ import { store } from "./store/store";
 import { Provider } from "react-redux";
 import { persistStore } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
+import { Elements } from "@stripe/react-stripe-js";
+import { stripe } from "./stripe/config";
 
-let persistor = persistStore(store);
+const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -16,7 +18,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <App />
+        <Elements stripe={stripe}>
+          <App />
+        </Elements>
       </PersistGate>
     </Provider>
   </React.StrictMode>

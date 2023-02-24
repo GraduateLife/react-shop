@@ -13,9 +13,10 @@ import {
   Portal,
 } from "@chakra-ui/react";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { CartItem } from "../../models/cargo.type";
 
 import {
   selectCartListData,
@@ -25,11 +26,7 @@ import {
 } from "../../store/cart/cart-list.selector";
 import { fetchCartList } from "../../store/cart/cart-list.slice";
 import { AppDispatch } from "../../store/store";
-import {
-  selectUserData,
-  selectUserId,
-  selectUserLogin,
-} from "../../store/user/user.selector";
+import { selectUserData } from "../../store/user/user.selector";
 import LoadingSpinner from "../layout/loading-spinner";
 import { CartIcon } from "./cart-icons";
 
@@ -39,43 +36,35 @@ import { CART_BEHAVIORS } from "./component-behaviors";
 //memoized
 function CartPopover() {
   const dispatch = useDispatch<AppDispatch>();
-  const userIsLogin = useSelector(selectUserLogin);
+  const currUser = useSelector(selectUserData);
 
-  const userId = useSelector(selectUserId);
-
-  const cartList = useSelector(selectCartListData);
+  let cartList = useSelector(selectCartListData);
   const cartFetchStatus = useSelector(selectCartRequestStatus);
   const cartOverallQuantity = useSelector(selectCartOverallQuantity);
   const cartOverallPrice = useSelector(selectCartOverallPrice);
-  const [cartListIsPending, setCartListIsPending] = useState(false);
+  // const [cartListIsPending, setCartListIsPending] = useState(false);
 
   const handleCartIconBtnClick = async () => {
-    setCartListIsPending(true);
-    if (cartFetchStatus === "idle") await dispatch(fetchCartList(userId));
-    if (cartFetchStatus === "succeeded") setCartListIsPending(false);
-  };
-  const handlePopoverClose = () => {
-    console.log("2");
-    //TODO - write to fb
+    if (cartFetchStatus === "idle") {
+      const res = await dispatch(fetchCartList(currUser.UserEmail));
+      cartList = res.payload as CartItem[];
+      console.log(res);
+    }
   };
 
   const navigate = useNavigate();
   const handleCheckoutBtnClick = () => {
-    alert("writing latest cart information to firebase...");
     navigate("/checkout");
   };
   return (
-    <Popover
-      placement="bottom-start"
-      isLazy
-      onClose={() => handlePopoverClose()}
-    >
+    <Popover placement="bottom-start" isLazy>
       {/* //LINK - cart icon btn */}
       <PopoverTrigger>
         <IconButton
           variant="invisible-active"
           aria-label="open shopping cart"
           icon={<CartIcon />}
+          isDisabled={currUser.UserIsLoggedIn === false}
           onClick={() => {
             handleCartIconBtnClick();
           }}
@@ -95,7 +84,7 @@ function CartPopover() {
             p={"0"} //PopoverBody has default padding
             overflowY={"auto"}
           >
-            {cartListIsPending === true ? (
+            {cartFetchStatus === "loading" ? (
               <Flex
                 w={"100%"}
                 h={`${CART_BEHAVIORS.CART_EMPTY_HEIGHT}`}
@@ -105,17 +94,18 @@ function CartPopover() {
                 <LoadingSpinner />
               </Flex>
             ) : (
-              <CartList cartList={cartList} />
+              <CartList cartList={cartList ?? ([] as CartItem[])} />
             )}
           </PopoverBody>
           {/* LINK dropdown footer, checkout button */}
           <PopoverFooter border={"none"}>
-            Overall Price: £ {cartListIsPending ? "--" : cartOverallPrice}
+            Overall Price: £ &nbsp;
+            {cartFetchStatus === "loading" ? "--" : cartOverallPrice}
             <Flex mt={2} justify={"center"}>
               <Button
                 colorScheme={"cyan"}
                 color="white"
-                isLoading={cartListIsPending}
+                isLoading={cartFetchStatus === "loading"}
                 onClick={() => handleCheckoutBtnClick()}
               >
                 checkout({cartOverallQuantity})
@@ -129,4 +119,4 @@ function CartPopover() {
   );
 }
 
-export default React.memo(CartPopover);
+export default CartPopover;

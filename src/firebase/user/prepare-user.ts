@@ -11,6 +11,10 @@ export const prepareMembershipUserDataWithFallback = (
     UserDisplayName: displayName,
     UserEmail: email.toLowerCase(),
     UserPassword: password,
-    UserIsLoggedIn: false,
+    UserIsLoggedIn: true,
   };
 };
+
+export type UserSchema = {
+  UserCreatedAt: Date;
+} & UserWebsite;

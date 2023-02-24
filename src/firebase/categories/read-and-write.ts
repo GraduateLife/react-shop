@@ -25,7 +25,7 @@ const CateEntity: Category[] = [
   },
 ];
 
-const writeCategories = async (whatWeSell = CateEntity) => {
+export const writeCategories = async (whatWeSell = CateEntity) => {
   whatWeSell.forEach(async (c) => {
     await writeOne<Category>("categories", c.CateName, c);
   });

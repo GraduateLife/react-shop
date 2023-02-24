@@ -1,4 +1,4 @@
-import { Box, Center, Heading, Text } from "@chakra-ui/react";
+import { Box, Center, Heading } from "@chakra-ui/react";
 
 import { CartItem } from "../../models/cargo.type";
 import CheckoutListItem from "./checkout-list-item";

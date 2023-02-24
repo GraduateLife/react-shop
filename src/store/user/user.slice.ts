@@ -1,19 +1,18 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { writeCartList } from "../../firebase/cartItems/read-and-write";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+
+import { updateField } from "../../firebase/db-rw";
 import { PROVIDERS } from "../../firebase/user/providers";
 import {
   findUserByEmail,
-  findUserById,
   findUserFromProvider,
 } from "../../firebase/user/read-and-write";
 import {
   startSignInWithProvider,
-  startSignOut,
   startSignUpWithEmail,
 } from "../../firebase/user/user-operations";
 
 import { UserWebsite } from "../../models/user.types";
-import { assertFireBaseError } from "../../utils/error-assertion";
+
 import { AsyncState } from "../types";
 
 const SLICE_NAME = "USER";
@@ -38,7 +37,11 @@ export const signInByEmail = createAsyncThunk(
   ASYNC_REDUCER_EMAIL_SIGN_IN,
   async (email: string) => {
     try {
-      return await findUserByEmail(email);
+      const res = await findUserByEmail(email);
+      return {
+        ...res,
+        UserCreatedAt: undefined,
+      };
     } catch (e: any) {
       return {
         ...userDataDefaultState,
@@ -55,10 +58,16 @@ export const signInByProvider = createAsyncThunk(
   }
 );
 
-export const signOut = createAsyncThunk(ASYNC_REDUCER_SIGN_OUT, async () => {
-  await startSignOut();
-  return userDataDefaultState;
-});
+export const signOut = createAsyncThunk(
+  ASYNC_REDUCER_SIGN_OUT,
+  async (email: string) => {
+    const targetUser = await findUserByEmail(email);
+    await updateField("users", targetUser.UserId, {
+      UserIsLoggedIn: false,
+    });
+    return userDataDefaultState;
+  }
+);
 
 const userDataDefaultState: UserWebsite = {
   UserId: "",
@@ -78,8 +87,11 @@ const userSlice = createSlice({
   name: SLICE_NAME,
   initialState: userInitialState,
   reducers: {
-    ACTION_RESET_RQ(state, action) {
+    ACTION_RESET_RQ(state) {
       state.requestStatus = "idle";
+    },
+    ACTION_USER_LOGIN_CHANGE(state, action: PayloadAction<boolean>) {
+      state.user.UserIsLoggedIn = action.payload;
     },
   },
   extraReducers(builder) {
@@ -94,9 +106,6 @@ const userSlice = createSlice({
       })
       .addCase(signUpByEmail.rejected, (state, action) => {
         state.requestStatus = "failed";
-        if (assertFireBaseError(action.error)) {
-          state.requestError = action.error;
-        } else throw action.error;
       })
       //LINK - email sign in bit start
       .addCase(signInByEmail.pending, (state, action) => {
@@ -108,9 +117,6 @@ const userSlice = createSlice({
       })
       .addCase(signInByEmail.rejected, (state, action) => {
         state.requestStatus = "failed";
-        if (assertFireBaseError(action.error)) {
-          state.requestError = action.error;
-        } else throw action.error;
       })
       //LINK - provider sign in bit start
       .addCase(signInByProvider.pending, (state, action) => {
@@ -122,9 +128,6 @@ const userSlice = createSlice({
       })
       .addCase(signInByProvider.rejected, (state, action) => {
         state.requestStatus = "failed";
-        if (assertFireBaseError(action.error)) {
-          state.requestError = action.error;
-        } else throw action.error;
       })
       //LINK - sign out bit start
       .addCase(signOut.pending, (state, action) => {
@@ -136,11 +139,8 @@ const userSlice = createSlice({
       })
       .addCase(signOut.rejected, (state, action) => {
         state.requestStatus = "failed";
-        if (assertFireBaseError(action.error)) {
-          state.requestError = action.error;
-        } else throw action.error;
       });
   },
 });
-export const { ACTION_RESET_RQ } = userSlice.actions;
+export const { ACTION_RESET_RQ, ACTION_USER_LOGIN_CHANGE } = userSlice.actions;
 export default userSlice.reducer;

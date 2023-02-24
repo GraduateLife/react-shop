@@ -8,6 +8,7 @@ import {
   FormHelperText,
   Flex,
   Center,
+  useToast,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SignUpInformation, SignUpValidator } from "./sign-up-form.validator";
@@ -26,6 +27,7 @@ export default function SignUpForm() {
   } = useForm<SignUpInformation>({ resolver: zodResolver(SignUpValidator) });
   const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
+  const toast = useToast();
 
   const handleSubmit = async (formInputs: SignUpInformation) => {
     let { displayName, email, password } = formInputs;
@@ -38,6 +40,14 @@ export default function SignUpForm() {
       displayName
     );
     await dispatch(signUpByEmail(preparedUser));
+    toast({
+      position: "top",
+      description:
+        "Congratulations! You have successfully created a new account!",
+      status: "success",
+      duration: 4000,
+      isClosable: true,
+    });
     navigate("/");
   };
 
@@ -59,7 +69,9 @@ export default function SignUpForm() {
         </FormControl>
         {/* //LINK - email address */}
         <FormControl isRequired isInvalid={errors ? true : false}>
-          <FormLabel htmlFor="email">Email Address</FormLabel>
+          <FormLabel htmlFor="email" textTransform={"capitalize"}>
+            Email Address
+          </FormLabel>
           <Input
             id="email"
             placeholder="Your email address"
@@ -69,13 +81,15 @@ export default function SignUpForm() {
             <FormErrorMessage>{errors.email.message}</FormErrorMessage>
           ) : (
             <FormHelperText>
-              You will use this email address as your account
+              Your email address is assumed to be the unique account
             </FormHelperText>
           )}
         </FormControl>
         {/* //LINK password */}
         <FormControl isRequired isInvalid={errors ? true : false}>
-          <FormLabel htmlFor="password">Password</FormLabel>
+          <FormLabel htmlFor="password" textTransform={"capitalize"}>
+            Password
+          </FormLabel>
           <Input
             id="password"
             placeholder="Your password"
@@ -93,7 +107,7 @@ export default function SignUpForm() {
         </FormControl>
         {/* //LINK confirm password */}
         <FormControl isRequired isInvalid={errors ? true : false}>
-          <FormLabel htmlFor="confirm-password">
+          <FormLabel htmlFor="confirm-password" textTransform={"capitalize"}>
             Confirm your password
           </FormLabel>
           <Input

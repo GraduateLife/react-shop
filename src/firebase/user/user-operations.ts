@@ -4,7 +4,6 @@ import {
   getAuth as fb_getAuth,
   signInWithPopup as fb_signInWithPopup,
   createUserWithEmailAndPassword as fb_createUserWithEmailAndPassword,
-  signOut as fb_signOut,
 } from "firebase/auth";
 import {
   writeUserFromMembership,
@@ -12,7 +11,6 @@ import {
 } from "./read-and-write";
 import { UserWebsite } from "../../models/user.types";
 import { ERR_MSGS } from "../../utils/error-assertion";
-import { writeOne } from "../db-rw";
 
 export const authToken = fb_getAuth(app);
 
@@ -41,10 +39,4 @@ export const startSignUpWithEmail = async (preparedUser: UserWebsite) => {
     if (dbRes === "ok") return UserId;
   }
   throw new Error(ERR_MSGS.UNEXPECTED_CASE);
-};
-
-export const startSignOut = async () => {
-  await fb_signOut(authToken);
-
-  return "ok";
 };

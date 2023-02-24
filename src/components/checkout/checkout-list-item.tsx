@@ -20,7 +20,7 @@ type IProp = {
   cartItem: CartItem;
 };
 
-export default function CheckoutListItem({ cartItem }: IProp) {
+function CheckoutListItem({ cartItem }: IProp) {
   const { ProdName, ProdImageUrl, ItemQuantity, ProdPrice } = cartItem;
   const dispatch = useDispatch();
   const handleRemoveItemBtnClick = () => {
@@ -88,3 +88,5 @@ export default function CheckoutListItem({ cartItem }: IProp) {
     </Flex>
   );
 }
+
+export default React.memo(CheckoutListItem);

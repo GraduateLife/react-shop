@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { readCategories } from "../../firebase/categories/read-and-write";
-import { readCollection } from "../../firebase/db-rw";
 import { Category } from "../../models/category.type";
 
 import { AsyncState } from "../types";

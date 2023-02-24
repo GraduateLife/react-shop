@@ -25,7 +25,6 @@ function CartListItem({ cartItem }: IProp) {
     dispatch(ACTION_MINUS(cartItem));
   };
   const handleAmountUpBtnClick = () => {
-    console.log("item rendered", cartItem.ProdName);
     dispatch(ACTION_PLUS(cartItem));
   };
 

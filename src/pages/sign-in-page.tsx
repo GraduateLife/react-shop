@@ -15,8 +15,8 @@ export default function SignInPage() {
           <Flex w={"100%"} direction={"column"} align="center" mt={4} px={12}>
             <SignInForm />
             <Center my={1.5}>
-              <Text fontSize={"md"} color={"shadow.medium"}>
-                or
+              <Text fontSize={"md"} color={"shadow.medium"} mt={"4"}>
+                or with providers
               </Text>
             </Center>
             <ProviderButtons />

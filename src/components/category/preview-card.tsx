@@ -1,4 +1,5 @@
 import { Button, Flex } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
 import { Category } from "../../models/category.type";
 
 type IProp = {
@@ -20,7 +21,9 @@ export default function PreviewCard({ category }: IProp) {
       bgSize="100%"
     >
       {/* //LINK - button */}
-      <Button colorScheme={"whiteAlpha"}>{CateName}</Button>
+      <Link to={`/products/${CateName}`}>
+        <Button colorScheme={"whiteAlpha"}>{CateName}</Button>
+      </Link>
     </Flex>
   );
 }
