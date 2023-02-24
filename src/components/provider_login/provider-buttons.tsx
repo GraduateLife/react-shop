@@ -34,9 +34,8 @@ export default function ProviderButtons() {
         duration: 4000,
         isClosable: true,
       });
+      navigate("/");
     }
-
-    navigate("/");
   };
   return (
     <ButtonGroup size={"long"}>
