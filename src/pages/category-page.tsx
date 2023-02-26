@@ -19,6 +19,7 @@ export default function CategoryPage() {
   const categoryList = useSelector(selectCategoryData);
   const requestStatus = useSelector(selectCategoryRequestStatus);
   useEffect(() => {
+    
     const x = async () => {
       if (requestStatus === "idle") {
         await dispatch(fetchCategoryList());
